@@ -1,0 +1,51 @@
+﻿@model List<CRUD_Management_System.Models.UserLoginModel>
+
+@{
+    ViewData["Title"] = "Inlog Gegevens";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Overzicht van alle login gegevens.</p>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+</head>
+<body>
+
+    <h2>Login Gegevens</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Alias</th>
+                <th>Password</th>
+                <th>Admin</th>
+                <th>Online</th>
+                <th>TheOne</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.AliasId</td>
+                    <td>@user.Password</td>
+                    <td>@user.Admin</td>
+                    <td>@user.OnlineStatus</td>
+                    <td>@user.TheOne</td>
+                    <td>
+                        <a href="@Url.Action("Details", "User", new { aliasId = user.AliasId })">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>

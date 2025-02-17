@@ -28,7 +28,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-///*
+/*
 // Migrate csv data
 using (var scope = app.Services.CreateScope())
 {
@@ -38,7 +38,7 @@ using (var scope = app.Services.CreateScope())
     var csvService = new CsvToDatabaseService(dbContext);
     await csvService.ImportUserLoginsFromCsvAsync("data_login.csv");
 }
-//*/
+*/
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -1,0 +1,49 @@
+﻿@model CRUD_Management_System.Models.UserLoginModel
+
+@{
+    ViewData["Title"] = "Login Gegevens";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Overzicht van gebruiker login gegevens.</p>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+</head>
+<body>
+
+    <h2>User Details</h2>
+
+    <table border="1">
+        <tr>
+            <th>Alias</th>
+            <td>@Model.AliasId</td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td>@Model.Password</td>
+        </tr>
+        <tr>
+            <th>Admin</th>
+            <td>@Model.Admin</td>
+        </tr>
+        <tr>
+            <th>Online Status</th>
+            <td>@Model.OnlineStatus</td>
+        </tr>
+        <tr>
+            <th>TheOne</th>
+            <td>@Model.TheOne</td>
+        </tr>
+    </table>
+
+</body>
+</html>
+

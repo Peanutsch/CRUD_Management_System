@@ -29,7 +29,7 @@ public class CsvToDatabaseService
             var fields = line.Split(',');
 
             if (fields.Length < 3)
-                continue; // Zorg ervoor dat er genoeg velden zijn
+                continue; // Asure there are enough fields
 
             // Convert string to booleans
             bool.TryParse(fields[2].Trim(), out bool admin);
