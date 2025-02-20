@@ -7,6 +7,7 @@ using CRUD_Management_System.Data;
 public class LoginController : Controller
 {
     private readonly AppDbContext _context;
+    public string? CurrentUser { get; set; }
 
     public LoginController(AppDbContext context)
     {
@@ -33,6 +34,7 @@ public class LoginController : Controller
         if (user != null)
         {
             // Login succesvol, redirect naar dashboard
+            TempData["CurrentUser"] = user.AliasId;  // Sla de gebruiker op in TempData
             return RedirectToAction("Index", "DashboardAdmin");
         }
 
