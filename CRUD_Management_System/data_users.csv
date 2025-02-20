@@ -1,4 +1,4 @@
-[0] NAME,[1] SURNAME,[2] ALIAS,[3] ADRESS,[4] ZIPCODE,[5] CITY,[6] EMAIL ADRESS,[7] PHONENUMBER,[8] ONLINE STATUS,[9] Absence due Illness
+[0] NAME,[1] SURNAME,[2] ALIAS,[3] ADDRESS,[4] ZIPCODE,[5] CITY,[6] EMAIL ADRESS,[7] PHONENUMBER,[8] ONLINE STATUS,[9] Absence due Illness
 Admin,Adminimaxi,admin,Enschedesestraat 6,7554RX,Hengelo,admin@admin.com,+31534256987,False,False
 Michiel,ter Elst,mist001,Enschedesestraat 666,7557 AA,Hengelo,peanutsch@duck.com,555-0042,False,False
 Persona,NewInTown,pewn001,straat 6,1234 BB,Almelo,pintown@mail.nl,555-4423,False,False

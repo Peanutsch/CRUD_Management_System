@@ -7,5 +7,6 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public DbSet<UserLoginModel> Users { get; set; }
+    public DbSet<UserDetailsModel> UserDetails { get; set; }
 }
 

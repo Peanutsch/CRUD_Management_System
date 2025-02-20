@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CRUD_Management_System.Controllers
 {
-    public class UserController : Controller
+    public class UserLoginDetailsController : Controller
     {
         private readonly AppDbContext _context;
 
-        public UserController(AppDbContext context)
+        public UserLoginDetailsController(AppDbContext context)
         {
             _context = context;
         }

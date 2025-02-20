@@ -1,0 +1,14 @@
+﻿@model CRUD_Management_System.Models.UserLoginModel
+@{
+    ViewData["Title"] = "Dashboard Admin";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welkom @Model.AliasId</h1>
+    <p></p>
+
+    <!--Buttons-->
+    <a asp-controller="UserDetails" asp-action="Index" class="btn btn-primary">Details Data</a>
+    <a asp-controller="UserLoginDetails" asp-action="Index" class="btn btn-secondary">Login Data</a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-danger">Uitloggen</a>
+</div>

@@ -1,0 +1,19 @@
+﻿@model CRUD_Management_System.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="alias">Alias</label>
+        <input type="text" id="alias" name="AliasId" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Wachtwoord</label>
+        <input type="password" id="password" name="Password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Inloggen</button>
+</form>

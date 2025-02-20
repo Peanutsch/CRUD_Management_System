@@ -1,0 +1,60 @@
+﻿@model List<CRUD_Management_System.Models.UserDetailsModel>
+
+@{
+    ViewData["Title"] = "Overzicht Gebruikers";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Overzicht van alle gebruikers.</p>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+</head>
+<body>
+
+    <h2>Login Gegevens</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Alias</th>
+                <th>Address</th>
+                <th>ZIP Code</th>
+                <th>City</th>
+                <th>Email</th>
+                <th>Phonenumber</th>
+                <th>Online Status</th>
+                <th>Absence due Illness</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.Surname</td>
+                    <td>@user.Alias</td>
+                    <td>@user.Address</td>
+                    <td>@user.ZIP</td>
+                    <td>@user.City</td>
+                    <td>@user.Email</td>
+                    <td>@user.Phonenumber</td>
+                    <td>@user.Online</td>
+                    <td>@user.Sick</td>
+                    <td>
+                        <a href="@Url.Action("Details", "User", new { aliasId = user.Alias })">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>

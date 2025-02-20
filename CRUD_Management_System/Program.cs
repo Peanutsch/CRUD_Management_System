@@ -29,14 +29,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 var app = builder.Build();
 
 /*
-// Migrate csv data
+// [Migrate csv data]
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<AppDbContext>();
 
     var csvService = new CsvToDatabaseService(dbContext);
-    await csvService.ImportUserLoginsFromCsvAsync("data_login.csv");
+    await csvService.ImportUserDetailsFromCsvAsync("data_users.csv");
 }
 */
 
