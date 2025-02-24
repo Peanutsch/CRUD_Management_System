@@ -13,7 +13,7 @@ public class EditUserDetailsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var users = await _context.UserDetails.ToListAsync();
+        var users = await _context.UserDetails.Skip(3).ToListAsync();
         ViewData["CurrentUser"] = TempData["CurrentUser"]; // Haal de waarde uit TempData
         return View(users);
     }

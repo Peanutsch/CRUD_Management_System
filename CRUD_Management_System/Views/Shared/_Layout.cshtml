@@ -16,13 +16,13 @@
         }
 
         body {
-            background-color: lightsteelblue;
+            background-color: hotpink;
         }
     </style>
 </head>
 
 <body>
-    <!-- Only use header when on Home page -->
+    <!-- Only use header when on Homepage (/View/Home/Index) -->
     @{
         var showHeader = ViewContext.RouteData.Values["Controller"]?.ToString() == "Home";
     }

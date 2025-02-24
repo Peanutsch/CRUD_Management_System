@@ -46,7 +46,8 @@
                             <td class="table-cell">@user.Online</td>
                             <td class="table-cell">@user.Sick</td>
                             <td>
-                                <a href="@Url.Action("Details", "User", new { aliasId = user.Alias })" class="btn btn-info btn-sm">Edit Details</a>
+                                                    <!-- Generate url with ("file.cshtml", "Folder") -->
+                                <a href="@Url.Action("Index", "EditUserDetails", new { aliasId = user.Alias })" class="btn btn-info btn-sm">Edit Details</a>
                             </td>
                         </tr>
                     }

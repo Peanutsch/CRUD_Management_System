@@ -12,24 +12,14 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 36))  // Ensure to use the correct MySQL version
-    ));
-
-/*
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
-*/
-/*
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-*/
+    options.UseMySql
+    (builder.Configuration.GetConnectionString("DefaultConnection"),
+     new MySqlServerVersion(new Version(8, 0, 36))));  // Ensure to use the correct MySQL version
 
 var app = builder.Build();
 
+#region [Migrate csv data]
 /*
-// [Migrate csv data]
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -39,6 +29,7 @@ using (var scope = app.Services.CreateScope())
     await csvService.ImportUserDetailsFromCsvAsync("data_users.csv");
 }
 */
+#endregion [Migrate csv data]
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
