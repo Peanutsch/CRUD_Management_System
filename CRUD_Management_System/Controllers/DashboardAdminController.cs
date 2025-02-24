@@ -16,16 +16,11 @@ namespace CRUD_Management_System.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult>Index(int? page)
+        public async Task<IActionResult>Index()
         {
-            int pageSize = 6; // Maximaal aantal gebruikers per pagina
-            int pageNumber = page ?? 1; // Standaard op pagina 1 starten
-
             var users = await _context.UserDetails.ToListAsync();
-            var pagedUsers = users.ToPagedList(pageNumber, pageSize);
-
             ViewData["CurrentUser"] = TempData["CurrentUser"]; // Haal de waarde uit TempData
-            return View(pagedUsers);
+            return View(users);
         }
     }
 }

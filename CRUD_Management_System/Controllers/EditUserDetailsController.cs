@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-public class UserDetailsController : Controller
+public class EditUserDetailsController : Controller
 {
     private readonly AppDbContext _context;
 
-    public UserDetailsController(AppDbContext context)
+    public EditUserDetailsController(AppDbContext context)
     {
         _context = context;
     }

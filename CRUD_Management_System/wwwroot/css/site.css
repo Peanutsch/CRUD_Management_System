@@ -1,3 +1,7 @@
+/* ============================= */
+/* Global Styles */
+/* ============================= */
+
 html 
 {
     font-size: 14px;
@@ -14,14 +18,77 @@ html
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/* ============================= */
+/* Login Style */
+/* ============================= */
+
+.centered-loginform {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Verticaal centreren */
+    align-items: center; /* Horizontaal centreren */
+    height: 100vh; /* Volledige hoogte van het scherm */
 }
+
+.loginform-container {
+    width: 100%;
+    max-width: 400px; /* Beperkt de breedte van het formulier */
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-pswisvisible {
+    background-color: #f8d7da; /* Lichte rode achtergrond */
+    border-block-width: 3px;
+    border-color: #f5c6cb; /* Rode rand */
+}
+
+
+/* ============================= */
+/* Tables */
+/* ============================= */
+
+.table-cell {
+    padding-left: 10px; /* Ruimte aan de linkerkant */
+    padding-right: 10px; /* Ruimte aan de rechterkant */
+    padding-top: 10px; /* Ruimte aan de linkerkant */
+    padding-bottom: 10px; /* Ruimte aan de rechterkant */
+    max-height: 600px;
+    overflow-x: auto;
+}
+
+/* Optioneel: Stijlen voor de tabelkop */
+.table-light {
+    background-color: #f8f9fa; /* Lichte achtergrondkleur voor de tabelkop */
+}
+
+/* ============================= */
+/* Buttons */
+/* ============================= */
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* ============================= */
+/* Layout & Spacing */
+/* ============================= */
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
+/* ============================= */
+/* Typography */
+/* ============================= */
+
+/* Form placeholders */
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
   text-align: end;

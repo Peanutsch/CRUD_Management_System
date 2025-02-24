@@ -1,7 +1,4 @@
-﻿@using X.PagedList
-@using X.PagedList.Mvc.Core
-@using X.PagedList.Extensions
-@model X.PagedList.IPagedList<CRUD_Management_System.Models.UserDetailsModel>
+﻿@model IEnumerable<CRUD_Management_System.Models.UserDetailsModel>
 
 @{
     ViewData["Title"] = "Dashboard Admin";
@@ -9,65 +6,55 @@
 
 <div class="text-center">
     <h1 class="display-4">Welkom @ViewData["CurrentUser"]</h1>
-    <p></p>
 
     <!-- Buttons -->
     <a asp-controller="Home" asp-action="Index" class="btn btn-danger">Uitloggen</a>
 
     <!-- Gebruikerslijst -->
     <div class="mt-4">
-        <!-- <h2>Overzicht Gebruikers</h2> -->
+        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Zoeken...">
 
-        <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
-            <thead class="table-light">
-                <tr>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Alias</th>
-                    <th>Address</th>
-                    <th>ZIP Code</th>
-                    <th>City</th>
-                    <th>Email</th>
-                    <th>Phonenumber</th>
-                    <th>Online Status</th>
-                    <th>Absence due Illness</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
+        <div class = "table-cell">
+            <table class="table table-bordered">
+                <thead class="table-light">
                     <tr>
-                        <td>@user.Name</td>
-                        <td>@user.Surname</td>
-                        <td>@user.Alias</td>
-                        <td>@user.Address</td>
-                        <td>@user.ZIP</td>
-                        <td>@user.City</td>
-                        <td>@user.Email</td>
-                        <td>@user.Phonenumber</td>
-                        <td>@user.Online</td>
-                        <td>@user.Sick</td>
-                        <td>
-                            <a href="@Url.Action("Details", "User", new { aliasId = user.Alias })" class="btn btn-info btn-sm">Edit Details</a>
-                        </td>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Alias</th>
+                        <th>Address</th>
+                        <th>ZIP Code</th>
+                        <th>City</th>
+                        <th>Email</th>
+                        <th>Phonenumber</th>
+                        <th>Online Status</th>
+                        <th>Absence due Illness</th>
+                        <th>Actions</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-
-        <!-- Paginering toevoegen -->
-        <div class="pagination-container">
-            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
-       {
-           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-           DisplayLinkToLastPage = PagedListDisplayMode.Always,
-           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-           DisplayLinkToNextPage = PagedListDisplayMode.Always,
-           MaximumPageNumbersToDisplay = 5,
-           LiElementClasses = new[] { "page-item" },
-           PageClasses = new[] { "page-link" }
-       })
+                </thead>
+                <tbody id="userTableBody">
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="table-cell">@user.Name</td>
+                            <td class="table-cell">@user.Surname</td>
+                            <td class="table-cell">@user.Alias</td>
+                            <td class="table-cell">@user.Address</td>
+                            <td class="table-cell">@user.ZIP</td>
+                            <td class="table-cell">@user.City</td>
+                            <td class="table-cell">@user.Email</td>
+                            <td class="table-cell">@user.Phonenumber</td>
+                            <td class="table-cell">@user.Online</td>
+                            <td class="table-cell">@user.Sick</td>
+                            <td>
+                                <a href="@Url.Action("Details", "User", new { aliasId = user.Alias })" class="btn btn-info btn-sm">Edit Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+<!-- JavaScript-bestand inladen voor de zoekfunctie -->
+<script src="~/js/userSearch.js"></script>
