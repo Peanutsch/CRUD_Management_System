@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<CRUD_Management_System.Models.UserDetailsModel>
+
+@{
     ViewData["Title"] = "Dashboard Admin";
 }
 
@@ -6,8 +8,16 @@
     <h1 class="display-4">Welkom @ViewData["CurrentUser"]</h1>
     <p></p>
 
-    <!--Buttons-->
+    <!-- Buttons -->
     <a asp-controller="UserDetails" asp-action="Index" class="btn btn-primary">Details Data</a>
-    <a asp-controller="UserLoginDetails" asp-action="Index" class="btn btn-secondary">Login Data</a>
     <a asp-controller="Home" asp-action="Index" class="btn btn-danger">Uitloggen</a>
+
+    <!-- 
+        <a asp-controller="UserLoginDetails" asp-action="Index" class="btn btn-secondary">Login Data</a>
+    -->
+
+    <!-- Gebruikerslijst -->
+    <div class="mt-4">
+        @await Html.PartialAsync("_UserList", Model)
+    </div>
 </div>

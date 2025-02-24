@@ -14,6 +14,7 @@ public class UserDetailsController : Controller
     public async Task<IActionResult> Index()
     {
         var users = await _context.UserDetails.ToListAsync();
+        ViewData["CurrentUser"] = TempData["CurrentUser"]; // Haal de waarde uit TempData
         return View(users);
     }
 
