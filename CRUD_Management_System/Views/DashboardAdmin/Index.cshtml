@@ -46,8 +46,10 @@
                             <td class="table-cell">@user.Online</td>
                             <td class="table-cell">@user.Sick</td>
                             <td>
-                                                    <!-- Generate url with ("file.cshtml", "Folder") -->
-                                <a href="@Url.Action("Index", "EditUserDetails", new { aliasId = user.Alias })" class="btn btn-info btn-sm">Edit Details</a>
+                                <button class="btn btn-info btn-sm edit-btn"
+                                        data-user='@Html.Raw(Json.Serialize(user))'>
+                                        Edit Details
+                                </button>
                             </td>
                         </tr>
                     }
@@ -59,3 +61,4 @@
 
 <!-- JavaScript-bestand inladen voor de zoekfunctie -->
 <script src="~/js/userSearch.js"></script>
+<script src="~/js/editUserDetails.js"></script>

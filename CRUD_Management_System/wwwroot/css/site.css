@@ -2,16 +2,14 @@
 /* Global Styles */
 /* ============================= */
 
-html 
-{
+html {
     font-size: 14px;
     position: relative;
     min-height: 100%;
     background-color: lightsteelblue
 }
 
-@media (min-width: 768px) 
-{
+@media (min-width: 768px) {
   html 
   {
     font-size: 16px;
