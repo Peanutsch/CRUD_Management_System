@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function ()
     {
         button.addEventListener('click', function ()
         {
-            console.log('Event Edit Button');
             editUser(this); // Roept de editUser functie aan en geeft de knop door
         });
     });
@@ -42,46 +41,28 @@ function editUser(button)
 function saveUser(button, alias)
 {
     const row = button.closest('tr');
-    const inputs = row.querySelectorAll('input'); // Verzamel alle invoervelden exclusief alias
+    const inputs = row.querySelectorAll('input'); // Verzamel alle invoervelden (input) exclusief alias
 
-    console.log(`inputs= ${JSON.stringify(inputs)}`);
-    console.log(`Aantal invoervelden: ${inputs.length}`);
+    let userData = { Alias: alias }; // Voeg alias direct toe, omdat deze niet in inputs zit
+    const keys = ["Name", "Surname", "Address", "ZIP", "City", "Email", "Phonenumber", "Online", "Sick"];
 
-    // Controleer of er genoeg inputs zijn
-    if (inputs.length < 9)
+    const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+    let tokenValue = tokenElement ? tokenElement.value : null; // Fallback naar null
+
+    console.log(`tokenElement: ${tokenElement}`);
+    console.log(`tokenValue: ${tokenValue}`);
+
+    for (let i = 0; i < inputs.length; i++)
     {
-        console.error("Niet genoeg invoervelden gevonden!");
-        return; // Stop de functie als er niet genoeg inputs zijn
+        userData[keys[i]] = inputs[i].type === "checkbox" ? inputs[i].checked : inputs[i].value;
+        console.log(`${keys[i]}: ${userData[keys[i]]}`);
     }
 
-    const userData = {
-        Name: inputs[0].value,
-        Surname: inputs[1].value,
-        Alias: alias, // Alias blijft onveranderd
-        Address: inputs[2].value,
-        ZIP: inputs[3].value,
-        City: inputs[4].value,
-        Email: inputs[5].value,
-        Phonenumber: inputs[6].value,
-        Online: inputs[7] ? inputs[7].checked : false, // Controleer of input bestaat
-        Sick: inputs[8] ? inputs[8].checked : false // Controleer of input bestaat
-    };
+    // Controleer of alle velden correct zijn ingelezen
+    console.log("Verwerkt userData:", userData);
 
     // AJAX-aanroep om de gegevens op te slaan
-    fetch(`/User/UpdateUser`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-        },
-        body: JSON.stringify(userData),
-    })
-        .then(response => response.json())
-        .then(updatedUser =>
-        {
-            updateRow(row, updatedUser); // Werk de rij bij met de nieuwe data
-        })
-        .catch(error => console.error('Fetch error:', error));
+    
 }
 
 

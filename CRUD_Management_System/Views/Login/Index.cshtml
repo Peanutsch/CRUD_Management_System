@@ -2,7 +2,10 @@
 <div class="centered-loginform">
     <div class="loginform-container">
         <h2 class="text-center">Login</h2>
+
         <form method="post">
+            @Html.AntiForgeryToken()
+
             <div class="form-group">
                 <label for="alias">Alias</label>
                 <input type="text" id="alias" name="AliasId" class="form-control" required>
@@ -23,3 +26,19 @@
 
 <!-- JavaScript-bestand inladen voor toggle zichtbaarheid wachtwoord-->
 <script src="~/js/togglePassword.js"></script>
+
+                    fetch(`/User/UpdateUser`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            /*'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value // Deze waarde is eerder opgehaald*/
+            'RequestVerificationToken': tokenValue // Deze waarde is eerder opgehaald
+        },
+        body: JSON.stringify(userData),
+    })
+        .then(response => response.json())
+        .then(updatedUser =>
+        {
+            updateRow(row, updatedUser); // Werk de rij bij met de nieuwe data
+        })
+        .catch(error => console.error('Fetch error:', error));
