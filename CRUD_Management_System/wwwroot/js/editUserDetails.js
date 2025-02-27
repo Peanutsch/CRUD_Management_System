@@ -62,7 +62,21 @@ function saveUser(button, alias)
     console.log("Verwerkt userData:", userData);
 
     // AJAX-aanroep om de gegevens op te slaan
-    
+    fetch(`/User/UpdateUser`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            /*'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value // Deze waarde is eerder opgehaald*/
+            'RequestVerificationToken': tokenValue // Deze waarde is eerder opgehaald
+        },
+        body: JSON.stringify(userData),
+    })
+        .then(response => response.json())
+        .then(updatedUser =>
+        {
+            updateRow(row, updatedUser); // Werk de rij bij met de nieuwe data
+        })
+        .catch(error => console.error('Fetch error:', error));
 }
 
 
