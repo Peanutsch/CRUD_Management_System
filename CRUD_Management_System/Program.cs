@@ -16,6 +16,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     (builder.Configuration.GetConnectionString("DefaultConnection"),
      new MySqlServerVersion(new Version(8, 0, 36))));  // Ensure to use the correct MySQL version
 
+builder.Services.AddAntiforgery(options => {
+    options.HeaderName = "RequestVerificationToken"; // Match met fetch header
+});
+
 var app = builder.Build();
 
 #region [Migrate csv data]

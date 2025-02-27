@@ -49,7 +49,6 @@ function saveUser(button, alias)
     const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
     let tokenValue = tokenElement ? tokenElement.value : null; // Fallback naar null
 
-    console.log(`tokenElement: ${tokenElement}`);
     console.log(`tokenValue: ${tokenValue}`);
 
     for (let i = 0; i < inputs.length; i++)
@@ -66,7 +65,7 @@ function saveUser(button, alias)
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            /*'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value // Deze waarde is eerder opgehaald*/
+            /*'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value */
             'RequestVerificationToken': tokenValue // Deze waarde is eerder opgehaald
         },
         body: JSON.stringify(userData),
