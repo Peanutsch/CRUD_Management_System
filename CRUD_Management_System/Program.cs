@@ -21,7 +21,9 @@ builder.Services.AddAntiforgery(options => {
     options.HeaderName = "RequestVerificationToken"; // Match met fetch header
 });
 
+// Dependency Injection
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<AliasService>();
 
 var app = builder.Build();
 

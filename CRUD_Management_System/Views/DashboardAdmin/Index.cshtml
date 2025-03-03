@@ -7,7 +7,7 @@
 <div class="text-center">
     <h1 class="display-4">Welkom @ViewData["CurrentUser"]</h1>
 
-    <!-- Buttons -->
+    <!-- Buttons Top -->
     <a asp-controller="Login" asp-action="Index" class="btn btn-danger">Uitloggen</a>
 
     <!-- Gebruikerslijst -->
@@ -29,6 +29,7 @@
                         <th>Online Status</th>
                         <th>Absence due Illness</th>
                         <th>Actions</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody id="userTableBody">
@@ -46,9 +47,20 @@
                             <td class="table-cell">@user.Online</td>
                             <td class="table-cell">@user.Sick</td>
                             <td>
-                                <button class="btn btn-info btn-sm edit-btn"
+                                <!--
+                                        <button class="btn btn-info btn-sm edit-btn"
                                         data-user='@Html.Raw(Json.Serialize(user))'>
                                         Edit
+                                </button>
+                                -->
+
+                                <a asp-controller="EditUserDetails" asp-action="Index" asp-route-alias="@user.Alias" class="btn btn-info btn-sm">Edit</a>
+
+                            </td>
+                            <td>
+                                <button class="btn btn-info btn-sm delete-btn"
+                                        data-user='@Html.Raw(Json.Serialize(user))'>
+                                        Delete
                                 </button>
                             </td>
                         </tr>
@@ -57,6 +69,8 @@
             </table>
         </div>
     </div>
+    <!-- Buttons Bottom -->
+    <a asp-controller="CreateUser" asp-action="Index" class="btn btn-danger">Create New User</a>
 </div>
 
 <!-- JavaScript-bestand inladen voor de zoekfunctie -->

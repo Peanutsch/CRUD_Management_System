@@ -54,6 +54,7 @@ html {
     padding-top: 10px; /* Ruimte aan de linkerkant */
     padding-bottom: 10px; /* Ruimte aan de rechterkant */
     max-height: 600px;
+    width: 1500px;
     overflow-x: auto;
 }
 

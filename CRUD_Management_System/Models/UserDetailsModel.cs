@@ -5,6 +5,7 @@ namespace CRUD_Management_System.Models;
 public class UserDetailsModel
 {
     [Key]
+    [Required(ErrorMessage = "Alias is verplicht")]
     public string Alias { get; set; } = null!;
 
     public string Name { get; set; } = null!;

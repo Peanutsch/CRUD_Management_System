@@ -1,13 +1,25 @@
 ﻿@model CRUD_Management_System.Models.UserDetailsModel
 
 @{
-    ViewData["Title"] = "Bewerk Gebruiker";
+    // Controleren of er een foutmelding in TempData staat
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    // Stel de titel van de pagina in via ViewData
+    ViewData["Title"] = "Nieuwe Gebruiker Maken";
 }
 
-<h2>Bewerk Gebruiker</h2>
+<h2>Nieuwe Gebruiker Maken</h2>
 
-<form asp-action="SaveEdit" method="post">
-    <input type="hidden" asp-for="Alias" />
+<form asp-action="CreateUser" method="post">
+    <div class="mb-3">
+        <label class="form-label">Alias</label>
+        <input type="text" class="form-control" asp-for="Alias" hidden />
+    </div>
 
     <div class="mb-3">
         <label class="form-label">Naam</label>
@@ -57,3 +69,6 @@
     <button type="submit" class="btn btn-success">Opslaan</button>
     <a asp-controller="DashboardAdmin" asp-action="Index" class="btn btn-secondary">Annuleren</a>
 </form>
+
+<!-- JavaScript-bestand inladen voor genereren alias in input veld Alias -->
+<script src="~/js/generateAlias.js"></script>
