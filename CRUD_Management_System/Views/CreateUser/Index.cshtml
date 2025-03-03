@@ -18,17 +18,17 @@
 <form asp-action="CreateUser" method="post">
     <div class="mb-3">
         <label class="form-label">Alias</label>
-        <input type="text" class="form-control" asp-for="Alias" hidden />
+        <input type="text" class="form-control" asp-for="Alias" id="Alias" readonly/>
     </div>
 
     <div class="mb-3">
         <label class="form-label">Naam</label>
-        <input type="text" class="form-control" asp-for="Name" required />
+        <input type="text" class="form-control" asp-for="Name" id="Name" oninput="generateAlias()" required />
     </div>
 
     <div class="mb-3">
         <label class="form-label">Achternaam</label>
-        <input type="text" class="form-control" asp-for="Surname" required />
+        <input type="text" class="form-control" asp-for="Surname" id="Surname" oninput="generateAlias()" required />
     </div>
 
     <div class="mb-3">
@@ -70,5 +70,12 @@
     <a asp-controller="DashboardAdmin" asp-action="Index" class="btn btn-secondary">Annuleren</a>
 </form>
 
-<!-- JavaScript-bestand inladen voor genereren alias in input veld Alias -->
+<script>
+    // Genereer de server-side URL en sla deze op in een JavaScript-variabele
+    var generateAliasUrl = '@Url.Action("GenerateAlias", "CreateUser")';
+    console.log(generateAliasUrl);  // Dit zou de juiste URL moeten tonen
+</script>
+
+<!-- Laad het externe JavaScript-bestand na het doorgeven van de URL -->
 <script src="~/js/generateAlias.js"></script>
+

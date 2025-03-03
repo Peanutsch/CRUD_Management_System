@@ -21,7 +21,7 @@ public class CreateUserController : Controller
     // Toon het formulier voor het maken van een nieuwe gebruiker
     public IActionResult Index()
     {
-        return View();
+        return View(); // Model met gegenereerde alias naar de view sturen
     }
 
     // Verwerk het formulier om een nieuwe gebruiker op te slaan
@@ -57,7 +57,12 @@ public class CreateUserController : Controller
     [HttpPost]
     public async Task<IActionResult> GenerateAlias(string name, string surname)
     {
+        Debug.WriteLine($"[CreateUser.GenerateAlias(name, surname)] Received name: {name}, surname: {surname}");
+
         var alias = await _aliasService.CreateTXTAlias(name, surname);
+
+        Debug.WriteLine($"Generated alias: {alias}");
+
         return Json(alias);
     }
 }
