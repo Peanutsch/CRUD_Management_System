@@ -15,47 +15,50 @@
 
 <h2>Nieuwe Gebruiker Maken</h2>
 
-<form asp-action="CreateUser" method="post">
-    <div class="mb-3">
-        <label class="form-label">Alias</label>
-        <input type="text" class="form-control" asp-for="Alias" id="Alias" readonly/>
+<form asp-action="CreateUser" method="post" class="user-form">
+    <div class="form-group fullwidth">
+        <label>Alias</label>
+        <input type="text" asp-for="Alias" id="Alias" readonly />
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Naam</label>
-        <input type="text" class="form-control" asp-for="Name" id="Name" oninput="generateAlias()" required />
+    <div class="form-group two-columns">
+        <div>
+            <label>Naam</label>
+            <input type="text" asp-for="Name" id="Name" oninput="generateAlias()" required />
+        </div>
+        <div>
+            <label>Achternaam</label>
+            <input type="text" asp-for="Surname" id="Surname" oninput="generateAlias()" required />
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Achternaam</label>
-        <input type="text" class="form-control" asp-for="Surname" id="Surname" oninput="generateAlias()" required />
+    <div class="form-group three-columns">
+        <div>
+            <label>Adres</label>
+            <input type="text" asp-for="Address" />
+        </div>
+        <div>
+            <label>Postcode</label>
+            <input type="text" asp-for="ZIP" />
+        </div>
+        <div>
+            <label>Stad</label>
+            <input type="text" asp-for="City" />
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Adres</label>
-        <input type="text" class="form-control" asp-for="Address" />
+    <div class="form-group two-columns">
+        <div>
+            <label>E-mail</label>
+            <input type="email" asp-for="Email" required />
+        </div>
+        <div>
+            <label>Telefoonnummer</label>
+            <input type="text" asp-for="Phonenumber" />
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Postcode</label>
-        <input type="text" class="form-control" asp-for="ZIP" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Stad</label>
-        <input type="text" class="form-control" asp-for="City" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">E-mail</label>
-        <input type="email" class="form-control" asp-for="Email" required />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Telefoonnummer</label>
-        <input type="text" class="form-control" asp-for="Phonenumber" />
-    </div>
-
+    <!--
     <div class="mb-3">
         <label class="form-label">Online Status</label>
         <input type="checkbox" asp-for="Online" />
@@ -65,6 +68,7 @@
         <label class="form-label">Afwezig door ziekte</label>
         <input type="checkbox" asp-for="Sick" />
     </div>
+    -->
 
     <button type="submit" class="btn btn-success">Opslaan</button>
     <a asp-controller="DashboardAdmin" asp-action="Index" class="btn btn-secondary">Annuleren</a>
