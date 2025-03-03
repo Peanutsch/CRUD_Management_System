@@ -2,6 +2,7 @@
     Index:
     Global Styles
     Login Form Style
+    Search Style
     Create User Form Style
     Tables Style
     Buttons Style
@@ -56,6 +57,16 @@ html {
 }
 
 /* ============================= */
+/* Search Style */
+/* ============================= */
+
+#searchInput {
+    width: 250px !important;
+    max-width: 800px;
+    margin-bottom: 10px;
+}
+
+/* ============================= */
 /* Create User Form Style */
 /* ============================= */
 
@@ -103,6 +114,17 @@ input[type="checkbox"] {
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+input[name="Name"],
+input[name="Address"],
+input[name="City"],
+input[name="Surname"] {
+    text-transform: capitalize;
+}
+
+input[name="ZIP"] {
+    text-transform: uppercase;
 }
 
 button {

@@ -46,8 +46,19 @@ public class CreateUserController : Controller
             return View("Index", newUser); // Formulier opnieuw tonen bij fouten
         }
 
-        // Voeg de nieuwe gebruiker toe aan de database
-        _context.UserDetails.Add(newUser);
+        // Maak een nieuwe UserLoginModel instantie voor de Users tabel
+        var newUserLogin = new UserLoginModel
+        {
+            AliasId = newUser.Alias,  // Gebruik het alias als AliasId
+            Password = newUser.Alias,  // Zet het alias als wachtwoord
+            Admin = false,  // Zet Admin op false
+            OnlineStatus = false,  // Zet OnlineStatus op false
+            TheOne = false  // Zet TheOne op false
+        };
+
+        // Voeg de nieuwe gebruiker toe aan zowel UserDetails als Users tabel
+        _context.Users.Add(newUserLogin); // Voeg toe aan de Users tabel
+        _context.UserDetails.Add(newUser); // Voeg toe aan de UserDetails tabel
         await _context.SaveChangesAsync();
 
         // Redirect naar dashboard

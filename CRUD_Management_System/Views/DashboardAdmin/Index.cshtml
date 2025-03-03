@@ -47,22 +47,14 @@
                             <td class="table-cell">@user.Online</td>
                             <td class="table-cell">@user.Sick</td>
                             <td>
-                                <!--
-                                        <button class="btn btn-info btn-sm edit-btn"
-                                        data-user='@Html.Raw(Json.Serialize(user))'>
-                                        Edit
-                                </button>
-                                -->
-
                                 <a asp-controller="EditUserDetails" asp-action="Index" asp-route-alias="@user.Alias" class="btn btn-info btn-sm">Edit</a>
-
                             </td>
                             <td>
                                 <button class="btn btn-info btn-sm delete-btn"
-                                        data-user='@Html.Raw(Json.Serialize(user))'>
-                                        Delete
+                                        data-alias="@user.Alias">Delete
                                 </button>
                             </td>
+
                         </tr>
                     }
                 </tbody>
@@ -76,4 +68,4 @@
 <!-- JavaScript-bestand inladen voor de zoekfunctie -->
 <script src="~/js/userSearch.js"></script>
 <!-- JavaScript-bestand inladen voor Edit Details -->
-<script src="~/js/editUserDetails.js"></script>
+<script src="~/js/deleteUserDetails.js"></script>

@@ -2,6 +2,7 @@
 using CRUD_Management_System.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 public class UserController : Controller
@@ -57,6 +58,9 @@ public class UserController : Controller
         var userDetails = await _context.UserDetails.FirstOrDefaultAsync(u => u.Alias == request.Alias);
         if (user == null || userDetails == null)
         {
+            Debug.WriteLine($"user = {user}");
+            Debug.WriteLine($"userDetails = {userDetails}");
+
             return NotFound(new { message = "Gebruiker niet gevonden." }); // Retourneer een object met een message
         }
 
