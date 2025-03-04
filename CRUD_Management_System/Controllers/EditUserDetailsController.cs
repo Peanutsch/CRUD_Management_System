@@ -34,8 +34,6 @@ public class EditUserDetailsController : Controller
     [HttpPost]
     public async Task<IActionResult> SaveEdit(UserDetailsModel updatedUser)
     {
-        
-
         if (!ModelState.IsValid)
         {
             return View("Index", updatedUser);

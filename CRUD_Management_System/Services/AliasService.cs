@@ -48,7 +48,6 @@ public class AliasService
             finalAlias = initialAlias + newNumber;
         }
 
-        Debug.WriteLine($"Final Alias: {finalAlias}");
         return finalAlias;
     }
 
