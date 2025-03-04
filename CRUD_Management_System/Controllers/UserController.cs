@@ -46,38 +46,25 @@ public class UserController : Controller
     }
 
     [HttpDelete]
-    //[Route("delete")]
     public async Task<IActionResult> DeleteUser([FromBody] UserDeleteRequest request)
     {
         if (request == null || string.IsNullOrEmpty(request.Alias))
         {
-            return BadRequest(new { message = "Ongeldige gebruikersalias." }); // Zorg ervoor dat je hier een object retourneert
+            return BadRequest(new { message = "Ongeldige gebruikersalias." });
         }
 
         var user = await _context.Users.FirstOrDefaultAsync(u => u.AliasId == request.Alias);
         var userDetails = await _context.UserDetails.FirstOrDefaultAsync(u => u.Alias == request.Alias);
         if (user == null || userDetails == null)
         {
-            Debug.WriteLine($"user = {user}");
-            Debug.WriteLine($"userDetails = {userDetails}");
-
-            return NotFound(new { message = "Gebruiker niet gevonden." }); // Retourneer een object met een message
+            return NotFound(new { success = false, message = "Gebruiker niet gevonden." });
         }
 
-        // Verwijder de gebruiker
         _context.Users.Remove(user);
         _context.UserDetails.Remove(userDetails);
         await _context.SaveChangesAsync();
 
-        await GetAllUsers();
-
-        return Ok(new { message = "Gebruiker succesvol verwijderd." }); // Retourneer een object met een message
+        return Ok(new { success = true, message = "Gebruiker succesvol verwijderd." });
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllUsers()
-    {
-        var users = await _context.UserDetails.ToListAsync();
-        return Ok(users); // Retourneer de lijst met gebruikers als JSON
-    }
 }

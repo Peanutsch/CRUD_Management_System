@@ -58,19 +58,7 @@
         </div>
     </div>
 
-    <!--
-    <div class="mb-3">
-        <label class="form-label">Online Status</label>
-        <input type="checkbox" asp-for="Online" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Afwezig door ziekte</label>
-        <input type="checkbox" asp-for="Sick" />
-    </div>
-    -->
-
-    <button type="submit" class="btn btn-success">Opslaan</button>
+    <button type="button" class="btn btn-success" id="saveCreateUserButton">Opslaan</button>
     <a asp-controller="DashboardAdmin" asp-action="Index" class="btn btn-secondary">Annuleren</a>
 </form>
 
@@ -82,6 +70,6 @@
 
 <!-- Laad het externe JavaScript-bestanden na het doorgeven van de URL -->
 <script src="~/js/generateAlias.js"></script>
-<script src="~/js/editUserDetails.js"></script>
 <script src="~/js/capitalizeLetters.js"></script>
+<script src="~/js/confirmation.js"></script>
 

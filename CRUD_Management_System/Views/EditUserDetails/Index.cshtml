@@ -54,6 +54,13 @@
         <input type="checkbox" asp-for="Sick" />
     </div>
 
+    <!-- Confirm to save edit (SweetAlert) -->
+    <button type="button" class="btn btn-success" id="saveEditButton">Opslaan</button>
+    
+    <!--
     <button type="submit" class="btn btn-success">Opslaan</button>
+    -->
     <a asp-controller="DashboardAdmin" asp-action="Index" class="btn btn-secondary">Annuleren</a>
 </form>
+
+<script src="~/js/confirmation.js"></script>

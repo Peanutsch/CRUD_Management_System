@@ -2,7 +2,9 @@
 using CRUD_Management_System.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class EditUserDetailsController : Controller
 {
@@ -32,6 +34,8 @@ public class EditUserDetailsController : Controller
     [HttpPost]
     public async Task<IActionResult> SaveEdit(UserDetailsModel updatedUser)
     {
+        
+
         if (!ModelState.IsValid)
         {
             return View("Index", updatedUser);

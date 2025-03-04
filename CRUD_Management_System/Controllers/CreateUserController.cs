@@ -57,8 +57,8 @@ public class CreateUserController : Controller
         };
 
         // Voeg de nieuwe gebruiker toe aan zowel UserDetails als Users tabel
-        _context.Users.Add(newUserLogin); // Voeg toe aan de Users tabel
-        _context.UserDetails.Add(newUser); // Voeg toe aan de UserDetails tabel
+        _context.Users.Add(newUserLogin); // Voeg toe aan de Login database
+        _context.UserDetails.Add(newUser); // Voeg toe aan de Details database
         await _context.SaveChangesAsync();
 
         // Redirect naar dashboard
