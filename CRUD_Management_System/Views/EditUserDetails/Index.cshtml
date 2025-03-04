@@ -1,57 +1,68 @@
 ﻿@model CRUD_Management_System.Models.UserDetailsModel
 
 @{
-    ViewData["Title"] = "Bewerk Gebruiker";
+    ViewData["Title"] = "Edit Details";
 }
 
-<h2>Bewerk Gebruiker</h2>
+<h2> </h2>
 
-<form asp-action="SaveEdit" method="post">
-    <input type="hidden" asp-for="Alias" />
+<!--<form asp-action="SaveEdit" method="post">-->
+<form asp-action="SaveEdit" method="post" class="user-form">
+    <!--<input type="hidden" asp-for="Alias" /> 
+    <div class="form-group fullwidth">
+        <div>
+            <label>Alias</label>
+            <input type="text" asp-for="Alias" id="Alias" readonly />
+        </div>
+    </div>
+    -->
 
-    <div class="mb-3">
-        <label class="form-label">Naam</label>
-        <input type="text" class="form-control" asp-for="Name" required />
+    <div class="form-group two-columns">
+        <div>
+            <label>Naam</label>
+            <input type="text" asp-for="Name" required />
+        </div>
+        <div>
+            <label>Achternaam</label>
+            <input type="text" asp-for="Surname" required />
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Achternaam</label>
-        <input type="text" class="form-control" asp-for="Surname" required />
+    <div class="form-group three-columns">
+        <div>
+            <label>Adres</label>
+            <input type="text" asp-for="Address" />
+        </div>
+        <div>
+            <label>Postcode</label>
+            <input type="text" asp-for="ZIP" />
+        </div>
+        <div>
+            <label>Stad</label>
+            <input type="text" asp-for="City" />
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Adres</label>
-        <input type="text" class="form-control" asp-for="Address" />
+    <div class="form-group two-columns">
+        <div>
+            <label>E-mail</label>
+            <input type="email" asp-for="Email" required />
+        </div>
+        <div>
+            <label>Telefoonnummer</label>
+            <input type="text" asp-for="Phonenumber" />
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Postcode</label>
-        <input type="text" class="form-control" asp-for="ZIP" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Stad</label>
-        <input type="text" class="form-control" asp-for="City" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">E-mail</label>
-        <input type="email" class="form-control" asp-for="Email" required />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Telefoonnummer</label>
-        <input type="text" class="form-control" asp-for="Phonenumber" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Online Status</label>
-        <input type="checkbox" asp-for="Online" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Afwezig door ziekte</label>
-        <input type="checkbox" asp-for="Sick" />
+    <div class="form-group two-columns">
+        <div>
+            <label>Online Status</label>
+            <input type="checkbox" asp-for="Online" />
+        </div>
+        <div>
+            <label>Afwezig door ziekte</label>
+            <input type="checkbox" asp-for="Sick" />
+        </div>
     </div>
 
     <!-- Confirm to save edit (SweetAlert) -->
@@ -61,10 +72,7 @@
             data-alias="@Model.Alias">
         Opslaan
     </button>
-    
-    <!--
-    <button type="submit" class="btn btn-success">Opslaan</button>
-    -->
+
     <a asp-controller="DashboardAdmin" asp-action="Index" class="btn btn-secondary">Annuleren</a>
 </form>
 
