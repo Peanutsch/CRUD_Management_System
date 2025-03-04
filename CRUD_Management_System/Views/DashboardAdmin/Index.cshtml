@@ -51,7 +51,9 @@
                             </td>
                             <td>
                                 <button class="btn btn-info btn-sm delete-btn"
-                                        data-alias="@user.Alias">Delete
+                                        type="button" id="deleteUserButton"
+                                        data-alias="@user.Alias">
+                                        Delete
                                 </button>
                             </td>
 
@@ -65,7 +67,7 @@
     <a asp-controller="CreateUser" asp-action="Index" class="btn btn-danger">Create New User</a>
 </div>
 
-<!-- JavaScript-bestand inladen voor de zoekfunctie -->
 <script src="~/js/userSearch.js"></script>
-<!-- JavaScript-bestand inladen voor Edit Details -->
-<script src="~/js/deleteUserDetails.js"></script>
+<script src="~/js/tableRowClickHighlight.js"></script>
+<script src="~/js/confirmation.js"></script>
+<script src="~/js/deleteUser.js"></script>

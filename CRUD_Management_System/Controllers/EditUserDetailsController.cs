@@ -2,35 +2,47 @@
 using CRUD_Management_System.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Metrics;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class EditUserDetailsController : Controller
 {
     private readonly AppDbContext _context;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EditUserDetailsController"/> class.
+    /// </summary>
+    /// <param name="context">Database context for accessing user data.</param>
     public EditUserDetailsController(AppDbContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Retrieves user details for editing based on the provided alias.
+    /// </summary>
+    /// <param name="alias">The alias of the user to be edited.</param>
+    /// <returns>The user details view if found, otherwise a NotFound result.</returns>
     public async Task<IActionResult> Index(string alias)
     {
         if (string.IsNullOrEmpty(alias))
         {
-            return NotFound("Geen alias opgegeven.");
+            return NotFound("No alias provided.");
         }
 
         var user = await _context.UserDetails.FirstOrDefaultAsync(u => u.Alias == alias);
         if (user == null)
         {
-            return NotFound("Gebruiker niet gevonden.");
+            return NotFound("User not found.");
         }
 
         return View(user);
     }
 
+    /// <summary>
+    /// Saves the updated user details to the database.
+    /// </summary>
+    /// <param name="updatedUser">The updated user details model.</param>
+    /// <returns>Redirects to the admin dashboard if successful, otherwise returns the edit view.</returns>
     [HttpPost]
     public async Task<IActionResult> SaveEdit(UserDetailsModel updatedUser)
     {
@@ -42,10 +54,10 @@ public class EditUserDetailsController : Controller
         var user = await _context.UserDetails.FirstOrDefaultAsync(u => u.Alias == updatedUser.Alias);
         if (user == null)
         {
-            return NotFound("Gebruiker niet gevonden.");
+            return NotFound("User not found.");
         }
 
-        // Update de gegevens
+        // Update user details
         user.Name = updatedUser.Name;
         user.Surname = updatedUser.Surname;
         user.Address = updatedUser.Address;
