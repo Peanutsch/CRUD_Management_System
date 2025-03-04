@@ -198,11 +198,20 @@ button:hover {
 }
 
 /* Highlight row background color */
-.highlight {
+tr.highlight-row {
     background-color: lightblue !important;
-    padding: 0 !important; /* Verwijder padding als dat een probleem is */
-    border: none !important; /* Verwijder borders als ze een probleem veroorzaken */
+    color: black !important;
+    font-weight: bold !important;
 }
+
+/* Prevent bootstrap overwrites this styling*/
+.table tr.highlight-row td {
+    background-color: lightblue !important;
+    color: black !important;
+    box-shadow: none !important; /* Prevent bootstrap overwrites this class */
+    font-weight: bold !important;
+}
+
 
 /* ============================= */
 /* Buttons Style */
