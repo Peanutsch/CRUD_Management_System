@@ -1,5 +1,6 @@
 ﻿using CRUD_Management_System.Data;
 using CRUD_Management_System.Models;
+using CRUD_Management_System.Encryption;
 using CRUD_Management_System.Services; // Don't forget to add the appropriate namespace for the service
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -60,11 +61,19 @@ public class CreateUserController : Controller
         var newUserLogin = new UserLoginModel
         {
             AliasId = newUser.Alias,  // Use the generated alias as the AliasId
-            Password = newUser.Alias,  // Set the alias as the default password
+            Password = PasswordManager.PasswordGenerator(),
             Admin = false,  // Set the Admin flag to false
             OnlineStatus = false,  // Set the OnlineStatus flag to false
             TheOne = false  // Set TheOne flag to false
         };
+
+        Debug.WriteLine("\n[ NEW USER ACCOUNT ]");
+        Debug.WriteLine($"AliasId: {newUserLogin.AliasId}");
+        Debug.WriteLine($"Password: {newUserLogin.Password}");
+        Debug.WriteLine($"Admin: {newUserLogin.Admin}");
+        Debug.WriteLine($"OnlineStatus: {newUserLogin.OnlineStatus}");
+        Debug.WriteLine($"TheOne: {newUserLogin.TheOne}\n");
+
 
         // Add the new user to both the UserDetails and Users tables in the database
         _context.Users.Add(newUserLogin); // Add to the Users table (login info)

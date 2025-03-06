@@ -17,44 +17,44 @@
 
 <form asp-action="CreateUser" method="post" class="user-form">
     <div class="form-group fullwidth">
-        <label>Alias</label>
+        <label for="Alias">Alias</label>
         <input type="text" asp-for="Alias" id="Alias" readonly />
     </div>
 
     <div class="form-group two-columns">
         <div>
-            <label>Naam</label>
+            <label for="Name">Naam</label>
             <input type="text" asp-for="Name" id="Name" oninput="generateAlias()" required />
         </div>
         <div>
-            <label>Achternaam</label>
+            <label for="Surname">Achternaam</label>
             <input type="text" asp-for="Surname" id="Surname" oninput="generateAlias()" required />
         </div>
     </div>
 
     <div class="form-group three-columns">
         <div>
-            <label>Adres</label>
-            <input type="text" asp-for="Address" />
+            <label for="Address">Adres</label>
+            <input type="text" asp-for="Address" id="Address" />
         </div>
         <div>
-            <label>Postcode</label>
-            <input type="text" asp-for="ZIP" />
+            <label for="ZIP">Postcode</label>
+            <input type="text" asp-for="ZIP" id="ZIP" />
         </div>
         <div>
-            <label>Stad</label>
-            <input type="text" asp-for="City" />
+            <label for="City">Stad</label>
+            <input type="text" asp-for="City" id="City" />
         </div>
     </div>
 
     <div class="form-group two-columns">
         <div>
-            <label>E-mail</label>
-            <input type="email" asp-for="Email" required />
+            <label for="Email">E-mail</label>
+            <input type="email" asp-for="Email" id="Email" required />
         </div>
         <div>
-            <label>Telefoonnummer</label>
-            <input type="text" asp-for="Phonenumber" />
+            <label for="Phonenumber">Telefoonnummer</label>
+            <input type="text" asp-for="Phonenumber" id="Phonenumber" />
         </div>
     </div>
 
@@ -62,7 +62,7 @@
             class="btn btn-success"
             id="saveCreateUserButton"
             data-alias="Alias">
-            Opslaan
+        Opslaan
     </button>
     <a asp-controller="DashboardAdmin" asp-action="Index" class="btn btn-secondary">Annuleren</a>
 </form>
@@ -77,4 +77,3 @@
 <script src="~/js/generateAlias.js"></script>
 <script src="~/js/capitalizeLetters.js"></script>
 <script src="~/js/confirmation.js"></script>
-

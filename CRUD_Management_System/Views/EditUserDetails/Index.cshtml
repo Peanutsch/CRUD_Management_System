@@ -6,62 +6,57 @@
 
 <h2> </h2>
 
-<!--<form asp-action="SaveEdit" method="post">-->
 <form asp-action="SaveEdit" method="post" class="user-form">
-    <!--<input type="hidden" asp-for="Alias" /> 
     <div class="form-group fullwidth">
-        <div>
-            <label>Alias</label>
-            <input type="text" asp-for="Alias" id="Alias" readonly />
-        </div>
+        <label for="Alias">Alias</label>
+        <input type="text" asp-for="Alias" id="Alias" readonly />
     </div>
-    -->
 
     <div class="form-group two-columns">
         <div>
-            <label>Naam</label>
-            <input type="text" asp-for="Name" required />
+            <label for="Name">Naam</label>
+            <input type="text" asp-for="Name" id="Name" required />
         </div>
         <div>
-            <label>Achternaam</label>
-            <input type="text" asp-for="Surname" required />
+            <label for="Surname">Achternaam</label>
+            <input type="text" asp-for="Surname" id="Surname" required />
         </div>
     </div>
 
     <div class="form-group three-columns">
         <div>
-            <label>Adres</label>
-            <input type="text" asp-for="Address" />
+            <label for="Address">Adres</label>
+            <input type="text" asp-for="Address" id="Address" />
         </div>
         <div>
-            <label>Postcode</label>
-            <input type="text" asp-for="ZIP" />
+            <label for="ZIP">Postcode</label>
+            <input type="text" asp-for="ZIP" id="ZIP" />
         </div>
         <div>
-            <label>Stad</label>
-            <input type="text" asp-for="City" />
-        </div>
-    </div>
-
-    <div class="form-group two-columns">
-        <div>
-            <label>E-mail</label>
-            <input type="email" asp-for="Email" required />
-        </div>
-        <div>
-            <label>Telefoonnummer</label>
-            <input type="text" asp-for="Phonenumber" />
+            <label for="City">Stad</label>
+            <input type="text" asp-for="City" id="City" />
         </div>
     </div>
 
     <div class="form-group two-columns">
         <div>
-            <label>Online Status</label>
-            <input type="checkbox" asp-for="Online" />
+            <label for="Email">E-mail</label>
+            <input type="email" asp-for="Email" id="Email" required />
         </div>
         <div>
-            <label>Afwezig door ziekte</label>
-            <input type="checkbox" asp-for="Sick" />
+            <label for="Phonenumber">Telefoonnummer</label>
+            <input type="text" asp-for="Phonenumber" id="Phonenumber" />
+        </div>
+    </div>
+
+    <div class="form-group two-columns">
+        <div>
+            <label for="Online">Online Status</label>
+            <input type="checkbox" asp-for="Online" id="Online" />
+        </div>
+        <div>
+            <label for="Sick">Afwezig door ziekte</label>
+            <input type="checkbox" asp-for="Sick" id="Sick" />
         </div>
     </div>
 
