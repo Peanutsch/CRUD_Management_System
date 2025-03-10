@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CRUD_Management_System.Data;
 using CRUD_Management_System.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,21 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<AliasService>();
 builder.Services.AddScoped<PasswordUpdateService>(); // Zorg ervoor dat de PasswordUpdateService wordt geregistreerd
 
+// JWT Authentication configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],  // Set your Issuer from appsettings.json
+            ValidAudience = builder.Configuration["Jwt:Audience"],  // Set your Audience from appsettings.json
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]!))  // Secret key from appsettings.json
+        };
+    });
 
 var app = builder.Build();
 
