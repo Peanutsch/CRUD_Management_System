@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+#region [BUILDERS]
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -24,11 +25,19 @@ builder.Services.AddAntiforgery(options => {
     options.HeaderName = "RequestVerificationToken"; // Match met fetch header
 });
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole(options =>
+{
+    options.LogToStandardErrorThreshold = LogLevel.Warning; // Ignore Entity Framework Core SQL-query logs
+});
+
+
 // Dependency Injection
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<AliasService>();
 builder.Services.AddScoped<PasswordUpdateService>(); // Zorg ervoor dat de PasswordUpdateService wordt geregistreerd
 
+#region [JWT Authentication Config]
 // JWT Authentication configuration
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -44,8 +53,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]!))  // Secret key from appsettings.json
         };
     });
+#endregion [JWT Authentication Config]
 
 var app = builder.Build();
+#endregion [BUILDERS]
 
 #region [Encrypt Passwords with BCrypt]
 /*
@@ -88,7 +99,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login}/{action=Index}/{id?}")
+    pattern: "{controller=Login}/{action=Index}/{id?}") // Login/Index is start page
     .WithStaticAssets();
 
 

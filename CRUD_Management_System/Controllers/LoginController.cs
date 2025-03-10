@@ -31,38 +31,89 @@ public class LoginController : Controller
         return View();
     }
 
+    #region [OLD INDEX]
+    /*
     /// <summary>
     /// Handles the login process when the user submits their credentials.
     /// </summary>
     /// <param name="model">The login model containing user credentials.</param>
     /// <returns>Redirects to DashboardAdmin on success, otherwise reloads the login view with an error message.</returns>
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken]
+    [IgnoreAntiforgeryToken]
     public async Task<IActionResult> Index(LoginModel model)
     {
-        // Validate the model
-        if (!ModelState.IsValid)
+        if (ModelState.IsValid)
         {
-            return View(model);
+            // Zoek de gebruiker op basis van AliasId
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.AliasId == model.AliasId);
+
+            Console.WriteLine($"Index > Ingevoerd wachtwoord: {model.Password}");
+            Console.WriteLine($"Index > Gehasht wachtwoord in DB: {user?.Password}");
+
+            // Als de gebruiker bestaat en het wachtwoord correct is
+            if (user != null && BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
+            {
+                // Maak een JWT-token aan voor de gebruiker
+                var token = GenerateJwtToken(user);
+
+                // Sla de gebruiker en de rol op in TempData
+                TempData["CurrentUser"] = user.AliasId;  // Bewaar de AliasId in TempData
+                TempData["Role"] = user.Admin.ToString();  // Bewaar de rol in TempData
+
+                // Stuur de JWT-token naar de frontend
+                return Ok(new { Token = token });  // Dit stuurt de JWT token als onderdeel van de response
+            }
+
+            // Voeg een foutmelding toe als de login niet succesvol is
+            ModelState.AddModelError("", "Invalid login credentials");
         }
 
-        // Check if a user exists with the given alias
-        var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.AliasId == model.AliasId);
+        // Als model validatie of login niet succesvol is, herlaad het loginform
+        return BadRequest(new { message = "Invalid login credentials" });
 
-        if (user != null && !string.IsNullOrEmpty(user.Password) && user.VerifyPassword(model.Password!))
+        //return View(model);
+    }
+    */
+    #endregion [OLD INDEX]
+
+    // POST method to handle user login
+    [HttpPost]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> Login([FromBody] LoginModel model)
+    {
+        Debug.WriteLine("Login method reached");
+
+        Debug.WriteLine($"Login > Ontvangen AliasId: {model.AliasId}");
+        Debug.WriteLine($"Login > Ontvangen Password: {model.Password}");
+
+
+        if (ModelState.IsValid)  // Check if the model is valid (i.e., required fields are filled)
         {
-            // Login successful, store the username in TempData and redirect to DashboardAdmin
-            TempData["CurrentUser"] = user.AliasId;  // TempData is used to temporarily store the logged-in user
-            TempData["Role"] = user.Admin.ToString();
-            return RedirectToAction("Index", "DashboardAdmin");
+            // Retrieve the user from the database based on the alias provided in the login model
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.AliasId == model.AliasId);
+
+            Debug.WriteLine($"Login > Ingevoerd wachtwoord: {model.Password}");
+            Debug.WriteLine($"Login > Gehasht wachtwoord in DB: {user?.Password}");
+
+            // If user is found and password verification is successful
+            if (user != null && BCrypt.Net.BCrypt.Verify(model.Password, user.Password))  // Verifying password with BCrypt
+            {
+                // Create a JWT token for the authenticated user
+                var token = GenerateJwtToken(user);
+
+                // Send the token as a response, which the frontend can use for subsequent requests
+                return Ok(new { Token = token });  // HTTP 200 status with the token
+            }
+
+            // If the user is not found or password is incorrect, return an error message
+            ModelState.AddModelError("", "Invalid login credentials");
         }
 
-        // Login failed, add an error message and reload the login view
-        ModelState.AddModelError("", "Invalid login credentials");
-        Debug.WriteLine("> Wrong Password...");
+        // If model validation fails or login credentials are invalid, return to the login view
+        return BadRequest(new { message = "Invalid login credentials" });
 
-        return View(model);
+        //return View(model);
     }
 
     // Private method to generate a JWT token for the user
