@@ -51,6 +51,7 @@ public class LoginController : Controller
         {
             // Login successful, store the username in TempData and redirect to DashboardAdmin
             TempData["CurrentUser"] = user.AliasId;  // TempData is used to temporarily store the logged-in user
+            TempData["Role"] = user.Admin.ToString();
             return RedirectToAction("Index", "DashboardAdmin");
         }
 

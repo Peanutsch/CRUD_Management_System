@@ -29,6 +29,7 @@ namespace CRUD_Management_System.Controllers
 
             // Retrieve the current user from TempData, which was set during login
             ViewData["CurrentUser"] = TempData["CurrentUser"];
+            ViewData["Role"] = TempData["Role"];
 
             // Return the view with the list of users
             return View(users);
