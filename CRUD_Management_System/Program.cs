@@ -24,8 +24,21 @@ builder.Services.AddAntiforgery(options => {
 // Dependency Injection
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<AliasService>();
+builder.Services.AddScoped<PasswordUpdateService>(); // Zorg ervoor dat de PasswordUpdateService wordt geregistreerd
+
 
 var app = builder.Build();
+
+#region [Encrypt Passwords with BCrypt]
+/*
+// Update de wachtwoorden naar gehashte wachtwoorden
+using (var scope = app.Services.CreateScope())
+{
+    var passwordUpdateService = scope.ServiceProvider.GetRequiredService<PasswordUpdateService>();
+    passwordUpdateService.UpdatePasswordsToHash(); // Update alle wachtwoorden in de database
+}
+*/
+#endregion [Encrypt Passwords with BCrypt]
 
 #region [Migrate csv data]
 /*

@@ -3,6 +3,7 @@ using CRUD_Management_System.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CRUD_Management_System.Data;
+using System.Diagnostics;
 
 public class LoginController : Controller
 {
@@ -42,11 +43,11 @@ public class LoginController : Controller
             return View(model);
         }
 
-        // Check if a user exists with the given alias and password
+        // Check if a user exists with the given alias
         var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.AliasId == model.AliasId && u.Password == model.Password);
+            .FirstOrDefaultAsync(u => u.AliasId == model.AliasId);
 
-        if (user != null)
+        if (user != null && !string.IsNullOrEmpty(user.Password) && user.VerifyPassword(model.Password!))
         {
             // Login successful, store the username in TempData and redirect to DashboardAdmin
             TempData["CurrentUser"] = user.AliasId;  // TempData is used to temporarily store the logged-in user
@@ -55,6 +56,8 @@ public class LoginController : Controller
 
         // Login failed, add an error message and reload the login view
         ModelState.AddModelError("", "Invalid login credentials");
+        Debug.WriteLine("> Wrong Password...");
+
         return View(model);
     }
 }
