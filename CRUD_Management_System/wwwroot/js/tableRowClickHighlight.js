@@ -13,11 +13,9 @@
             {
                 r.classList.remove("highlight-row");  // Removes the highlight class
             });
-            console.log("Remove Highlight from all rows");
 
             // Add the highlight class to the clicked row
             row.classList.add("highlight-row");  // Adds the highlight class to the clicked row
-            console.log("Add highlight to clicked row", row);
 
             // Prevent the click event from propagating to the document
             event.stopPropagation();
@@ -31,6 +29,5 @@
         {
             row.classList.remove("highlight-row");  // Reset background color
         });
-        console.log("Reset Highlight from all rows when clicked outside");
     });
 });

@@ -28,8 +28,6 @@
         })
             .then(response =>
             {
-                // console.log("Server response:", response); // 🔍 Response loggen
-
                 if (!response.ok)
                 {
                     throw new Error("Login request failed");
@@ -40,10 +38,10 @@
             {
                 if (responseData.token)
                 {
-                    console.log("Received Token");
+                    console.log("Token Received");
 
                     handleLogin(responseData);
-                    window.location.href = '/DashboardAdmin/Index';
+                    window.location.href = '/DashboardAdmin/Index'; // Login succes: Go to /DashboardAdmin/Index
                 } else
                 {
                     alert("Invalid login credentials");

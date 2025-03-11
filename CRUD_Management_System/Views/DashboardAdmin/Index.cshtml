@@ -33,32 +33,34 @@
                     </tr>
                 </thead>
                 <tbody id="userTableBody">
+                    @*
                     @foreach (var user in Model)
                     {
-                        <tr>
-                            <td class="table-cell">@user.Name</td>
-                            <td class="table-cell">@user.Surname</td>
-                            <td class="table-cell">@user.Alias</td>
-                            <td class="table-cell">@user.Address</td>
-                            <td class="table-cell">@user.ZIP</td>
-                            <td class="table-cell">@user.City</td>
-                            <td class="table-cell">@user.Email</td>
-                            <td class="table-cell">@user.Phonenumber</td>
-                            <td class="table-cell">@user.Online</td>
-                            <td class="table-cell">@user.Sick</td>
-                            <td>
-                                <a asp-controller="EditUserDetails" asp-action="Index" asp-route-alias="@user.Alias" class="btn btn-info btn-sm">Edit</a>
-                            </td>
-                            <td>
-                                <button class="btn btn-info btn-sm delete-btn"
-                                        type="button" id="deleteUserButton"
-                                        data-alias="@user.Alias">
-                                        Delete
-                                </button>
-                            </td>
+                            <tr>
+                                <td class="table-cell">@user.Name</td>
+                                <td class="table-cell">@user.Surname</td>
+                                <td class="table-cell">@user.Alias</td>
+                                <td class="table-cell">@user.Address</td>
+                                <td class="table-cell">@user.ZIP</td>
+                                <td class="table-cell">@user.City</td>
+                                <td class="table-cell">@user.Email</td>
+                                <td class="table-cell">@user.Phonenumber</td>
+                                <td class="table-cell">@user.Online</td>
+                                <td class="table-cell">@user.Sick</td>
+                                <td>
+                                    <a asp-controller="EditUserDetails" asp-action="Index" asp-route-alias="@user.Alias" class="btn btn-info btn-sm">Edit</a>
+                                </td>
+                                <td>
+                                    <button class="btn btn-info btn-sm delete-btn"
+                                            type="button" id="deleteUserButton"
+                                            data-alias="@user.Alias">
+                                            Delete
+                                    </button>
+                                </td>
 
-                        </tr>
+                            </tr>
                     }
+                    *@
                 </tbody>
             </table>
         </div>
