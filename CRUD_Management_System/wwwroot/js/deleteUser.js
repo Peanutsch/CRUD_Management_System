@@ -2,6 +2,8 @@
 {
     const row = button.closest('tr'); // Get the closest row
 
+    console.log('Deleting user with alias:', alias); // Debugging log
+
     fetch('/User/DeleteUser', {
         method: 'DELETE', // DELETE method to match the server's API
         headers: {

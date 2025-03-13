@@ -27,7 +27,6 @@ namespace CRUD_Management_System.Controllers
         //[Route("Index")]
         public IActionResult Index()
         {
-            Debug.WriteLine("<Running [LogginController] Index");
             var token = Request.Cookies["AuthToken"]; // Haal token uit de cookie
 
             if (!string.IsNullOrEmpty(token))

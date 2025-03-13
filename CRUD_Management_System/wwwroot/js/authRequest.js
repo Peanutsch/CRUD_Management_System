@@ -100,5 +100,18 @@ function displayUsers(users)
 
         // Append the newly created row to the table body
         tableBody.appendChild(row);
+
+        const deleteButton = row.querySelector(".delete-btn");
+        if (deleteButton)
+        {
+            deleteButton.addEventListener("click", function ()
+            {
+                const alias = deleteButton.getAttribute("data-alias");
+
+                // Call the showDeleteConfirmation function from confirmation.js
+                showDeleteConfirmation(alias, deleteButton, deleteUser);
+            });
+        }
     });
 }
+

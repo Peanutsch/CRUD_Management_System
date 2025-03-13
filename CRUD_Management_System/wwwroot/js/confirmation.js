@@ -82,3 +82,25 @@
         });
     });
 });
+
+// Function to show the confirmation alert and perform the delete action if confirmed
+function showDeleteConfirmation(alias, deleteButton, deleteUserCallback)
+{
+    Swal.fire({
+        title: "Confirm",
+        html: `Are you sure you want to delete account <strong>[${alias}]</strong>?`, // Make alias bold using <strong>
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel"
+    }).then((result) =>
+    {
+        if (result.isConfirmed)
+        {
+            // If confirmed, perform the delete action
+            deleteUserCallback(deleteButton, alias); // Call the deleteUser callback with the button and alias
+        }
+    });
+}
