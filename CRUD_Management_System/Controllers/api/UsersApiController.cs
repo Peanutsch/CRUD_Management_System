@@ -20,8 +20,6 @@ namespace CRUD_Management_System.Controllers.api
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDetailsModel>>> GetUsers()
         {
-            Debug.WriteLine("API WERKT!");
-
             var users = await _context.UserDetails
                                        .Select(u => new UserDetailsModel
                                        {
@@ -37,12 +35,6 @@ namespace CRUD_Management_System.Controllers.api
                                            Sick = u.Sick
                                        })
                                        .ToListAsync();
-            
-            foreach (var user in users)
-            {
-                Debug.WriteLine($"User found: {user.Alias}, {user.Name}, {user.Surname}");
-            }
-
             return Ok(users);
         }
     }

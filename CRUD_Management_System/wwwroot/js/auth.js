@@ -1,15 +1,21 @@
 ﻿document.addEventListener("DOMContentLoaded", function ()
 {
 
-    // Functie om de JWT-token op te slaan na een succesvolle login
+    // Functie om de JWT-token op te slaan in een cookie na een succesvolle login
     function handleLogin(response)
     {
         if (response.token)
         {
-            sessionStorage.setItem('jwtToken', response.token); // Token opslaan
-        } else
+            // Token opslaan in een HttpOnly cookie. Cookie blijft 24 uur lang geldig (86400000 ms)
+            document.cookie = "AuthToken=" + response.token +
+                              "; Secure; HttpOnly; SameSite=Strict; expires=" +
+                              new Date(Date.now() + 86400000).toUTCString() +
+                              "; path=/";
+
+        }
+        else
         {
-            console.warn("Geen token ontvangen bij login.");
+            console.warn("[auth.js]\n handleLogin > No token received at login...");
         }
     }
 
@@ -24,13 +30,14 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ AliasId: alias, Password: password })
+            body: JSON.stringify({ AliasId: alias, Password: password }),
+            credentials: "include" // Zorg ervoor dat cookies meegestuurd worden bij verzoeken
         })
             .then(response =>
             {
                 if (!response.ok)
                 {
-                    throw new Error("Login request failed");
+                    throw new Error("[auth.js]\n login() Response > Login request failed");
                 }
                 return response.json();
             })
@@ -38,18 +45,16 @@
             {
                 if (responseData.token)
                 {
-                    console.log("Token Received");
-
-                    handleLogin(responseData);
-                    window.location.href = '/DashboardAdmin/Index'; // Login succes: Go to /DashboardAdmin/Index
+                    handleLogin(responseData);                      // Token wordt nu opgeslagen in een cookie
+                    window.location.href = '/DashboardAdmin/Index'; // Login succes: ga naar /DashboardAdmin/Index
                 } else
                 {
-                    alert("Invalid login credentials");
+                    alert("[auth.js]\n ResponseData > Invalid login credentials");
                 }
             })
             .catch(error =>
             {
-                console.error("Login failed", error);
+                console.error("\n[auth.js]\n login()", error);
                 alert("Login failed");
             });
     }
@@ -65,6 +70,6 @@
         });
     } else
     {
-        console.error("Login-knop niet gevonden.");
+        console.error("Login-knop niet gevonden...");
     }
 });

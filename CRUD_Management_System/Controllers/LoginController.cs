@@ -8,6 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Data;
+using Newtonsoft.Json;
 
 public class LoginController : Controller
 {
@@ -17,84 +19,87 @@ public class LoginController : Controller
     // Constructor to inject configuration and database context
     public LoginController(IConfiguration configuration, AppDbContext context)
     {
-        _configuration = configuration;  // Access application settings
-        _context = context;  // Database context to interact with the Users table
+        _configuration = configuration;  // Access application settings (e.g., JWT secret, issuer, etc.)
+        _context = context;  // Database context to interact with the Users table in the database
     }
 
     /// <summary>
-    /// Displays the login page.
+    /// Displays the login page view.
     /// </summary>
-    /// <returns>The login view.</returns>
+    /// <returns>The login view (Index view).</returns>
     [HttpGet]
     public IActionResult Index()
     {
-        return View();
+        return View();  // Returns the login page view
     }
 
-    // POST method to handle user login
+    /// <summary>
+    /// Handles the login process by verifying user credentials and generating a JWT token.
+    /// </summary>
+    /// <param name="model">The login model containing the alias (username) and password provided by the user.</param>
+    /// <returns>Redirects to a view or returns a JSON response with a token.</returns>
     [HttpPost]
-    [IgnoreAntiforgeryToken]
+    //[IgnoreAntiforgeryToken]  // Disables CSRF protection for this action
     public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
-        Debug.WriteLine(" [LOGIN METHOD REACHED]");
-        Debug.WriteLine($"Login > Ontvangen AliasId: {model.AliasId}");
-        Debug.WriteLine($"Login > Ontvangen Password: {model.Password}");
-
-
-        if (ModelState.IsValid)  // Check if the model is valid (i.e., required fields are filled)
+        if (ModelState.IsValid)  // Check if the model passed from the frontend is valid
         {
-            // Retrieve the user from the database based on the alias provided in the login model
+            // Retrieve user from the database based on AliasId (username)
             var user = await _context.Users.FirstOrDefaultAsync(u => u.AliasId == model.AliasId);
 
-            Debug.WriteLine($"Login > Ingevoerd wachtwoord: {model.Password}");
-            Debug.WriteLine($"Login > Gehasht wachtwoord in DB: {user?.Password}\n");
-
-            // If user is found and password verification is successful
-            if (user != null && BCrypt.Net.BCrypt.Verify(model.Password, user.Password))  // Verifying password with BCrypt
+            // If the user exists and the password matches
+            if (user != null && BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
             {
-                // Create a JWT token for the authenticated user
+                // Generate a JWT token for the authenticated user
                 var token = GenerateJwtToken(user);
 
-                // Send the token as a response, which the frontend can use for subsequent requests
-                return Ok(new { Token = token });  // HTTP 200 status with the token
-            }
+                // Store the token in a secure cookie (HttpOnly, Secure, SameSite)
+                Response.Cookies.Append("AuthToken", token, new CookieOptions
+                {
+                    // HttpOnly is temporarily off here for JavaScript access to the token, usually should be enabled
+                    // HttpOnly = true, // Protects against XSS (Cross-Site Scripting) attacks
+                    Secure = true,    // Ensures the cookie is only sent over HTTPS
+                    Expires = DateTime.UtcNow.AddDays(1),  // Set the cookie expiration to 1 day
+                    SameSite = SameSiteMode.Strict,  // Restrict the cookie to same-site requests only
+                    Path = "/"  // Cookie is accessible for all pages in the application
+                });
 
-            // If the user is not found or password is incorrect, return an error message
-            ModelState.AddModelError("", "Invalid login credentials\n");
+                return Ok(new { token });  // Return the token as part of the response to the client
+            }
         }
 
-        // If model validation fails or login credentials are invalid, return to the login view
-        //return BadRequest(new { message = "Invalid login credentials" });
-
-        return View(model);
+        return View(model);  // If the login fails, return the login view with the model
     }
 
-    // Private method to generate a JWT token for the user
+    /// <summary>
+    /// Generates a JWT (JSON Web Token) for the authenticated user.
+    /// </summary>
+    /// <param name="user">The authenticated user whose information will be included in the token.</param>
+    /// <returns>A JWT token string.</returns>
     private string GenerateJwtToken(UserLoginModel user)
     {
-        // Define claims (user's details) that will be included in the JWT token
+        // Define the claims (user-specific information) to be included in the JWT token
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.AliasId),  // Subject claim, stores the user AliasId
-            new Claim(ClaimTypes.Name, user.AliasId),  // Name claim, stores the user AliasId
-            new Claim("role", user.Admin ? "Admin" : "User"),  // Role claim, assigns "Admin" or "User" based on the user's role
+            new Claim(JwtRegisteredClaimNames.Sub, user.AliasId),  // AliasId (username) as the subject of the token
+            new Claim(ClaimTypes.Name, user.AliasId),  // Name claim: AliasId (username)
+            new Claim("role", user.Admin ? "admin" : "user"),  // Role claim: "admin" if the user is an admin, otherwise "user"
         };
 
-        // Create a symmetric security key based on the secret key defined in the appsettings.json file
+        // Create a symmetric security key based on the secret key from the appsettings.json
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]!));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);  // Signing credentials using HMAC-SHA256 algorithm
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);  // Signing credentials with HMAC-SHA256
 
-        // Create the JWT token with the specified claims, issuer, audience, and expiration time
+        // Create the JWT token with claims, expiration date, and signing credentials
         var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],  // Issuer of the token (usually your server or service)
-            audience: _configuration["Jwt:Audience"],  // Intended audience of the token
-            claims: claims,  // Claims representing the user's details
-            expires: DateTime.Now.AddDays(1),  // Set the token expiration to 1 day
-            signingCredentials: creds  // Sign the token with the credentials
+            issuer: _configuration["Jwt:Issuer"],  // Issuer of the token (usually the API server)
+            audience: _configuration["Jwt:Audience"],  // Intended audience for the token (client apps)
+            claims: claims,  // Include the user-specific claims (AliasId, role)
+            expires: DateTime.Now.AddDays(1),  // Token expires in 1 day
+            signingCredentials: creds  // Sign the token using the credentials
         );
 
-        // Return the token as a string, which can be sent as part of the HTTP response
+        // Convert the token to a string and return it
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
-

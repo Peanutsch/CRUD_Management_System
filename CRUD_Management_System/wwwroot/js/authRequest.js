@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", function ()
 // Function to add JWT token to the header of the request
 function addAuthHeaderToRequest(url)
 {
-    // Get the JWT token stored in sessionStorage
-    const token = sessionStorage.getItem('jwtToken');
+    // Get the JWT token from the cookies (not from sessionStorage)
+    const token = getCookie('AuthToken'); // Function to get the AuthToken cookie
 
     // Check if the token exists
     if (token)
@@ -32,21 +32,32 @@ function addAuthHeaderToRequest(url)
             })
             .then(data =>
             {
-                // Log the received data to the console
-                console.log("Data ontvangen:", data);
                 // Call function to display the users data on the page
                 displayUsers(data);
             })
             .catch(error =>
             {
                 // Log an error message if the request fails
-                console.error("Request mislukt:", error);
+                console.error("Request failed:", error);
             });
     } else
     {
-        // If no JWT token is found in sessionStorage, log a warning
-        console.warn("Geen JWT-token gevonden in localStorage.");
+        // If no JWT token is found in cookies, log a warning
+        console.warn("[authRequest.js]\n addAuthHeaderToRequest > No JWT-token in cookies...");
     }
+}
+
+// Function to get a cookie by name
+function getCookie(name)
+{
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2)
+    {
+        return parts.pop().split(';').shift();
+    }
+    console.warn("[authRequest.js]\n getCookie > No cookie");
+    return null;
 }
 
 // Function to display the list of users in the table
@@ -65,24 +76,25 @@ function displayUsers(users)
         const row = document.createElement("tr");
 
         // Set the inner HTML of the row with the user's data
+        // JSON style non caps
         row.innerHTML = `
-            <td class="table-cell">${user.Name}</td>               <!-- Display Name -->
-            <td class="table-cell">${user.Surname}</td>            <!-- Display Surname -->
-            <td class="table-cell">${user.Alias}</td>              <!-- Display Alias -->
-            <td class="table-cell">${user.Address}</td>            <!-- Display Address -->
-            <td class="table-cell">${user.ZIP}</td>                <!-- Display ZIP Code -->
-            <td class="table-cell">${user.City}</td>               <!-- Display City -->
-            <td class="table-cell">${user.Email}</td>              <!-- Display Email -->
-            <td class="table-cell">${user.Phonenumber}</td>        <!-- Display Phone Number -->
-            <td class="table-cell">${user.Online}</td>             <!-- Display Online Status -->
-            <td class="table-cell">${user.Sick}</td>               <!-- Display Sick Status -->
+            <td class="table-cell">${user.name}</td>               <!-- Display Name -->
+            <td class="table-cell">${user.surname}</td>            <!-- Display Surname -->
+            <td class="table-cell">${user.alias}</td>              <!-- Display Alias -->
+            <td class="table-cell">${user.address}</td>            <!-- Display Address -->
+            <td class="table-cell">${user.zip}</td>                <!-- Display ZIP Code -->
+            <td class="table-cell">${user.city}</td>               <!-- Display City -->
+            <td class="table-cell">${user.email}</td>              <!-- Display Email -->
+            <td class="table-cell">${user.phonenumber}</td>        <!-- Display Phone Number -->
+            <td class="table-cell">${user.online}</td>             <!-- Display Online Status -->
+            <td class="table-cell">${user.sick}</td>               <!-- Display Sick Status -->
             <td>
                 <!-- Link to the Edit User page with the user's Alias as a query parameter -->
-                <a href="/EditUserDetails/Index?alias=${user.Alias}" class="btn btn-info btn-sm">Edit</a>
+                <a href="/EditUserDetails/Index?alias=${user.alias}" class="btn btn-info btn-sm">Edit</a>
             </td>
             <td>
                 <!-- Button to delete the user, with the Alias as a data attribute -->
-                <button class="btn btn-info btn-sm delete-btn" type="button" data-alias="${user.Alias}">Delete</button>
+                <button class="btn btn-info btn-sm delete-btn" type="button" data-alias="${user.alias}">Delete</button>
             </td>
         `;
 

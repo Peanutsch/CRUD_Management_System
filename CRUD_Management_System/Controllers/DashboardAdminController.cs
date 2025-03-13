@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CRUD_Management_System.Data;
+using System.IdentityModel.Tokens.Jwt;
+using System.Diagnostics;
 
 namespace CRUD_Management_System.Controllers
 {
@@ -22,17 +24,40 @@ namespace CRUD_Management_System.Controllers
         /// Retrieves the current user from TempData for display purposes.
         /// </summary>
         /// <returns>A view displaying the list of users and the current user.</returns>
-        public async Task<IActionResult> Index()
+        //[Route("Index")]
+        public IActionResult Index()
         {
-            // Retrieve the list of users from the UserDetails table
-            var users = await _context.UserDetails.ToListAsync();
+            Debug.WriteLine("<Running [LogginController] Index");
+            var token = Request.Cookies["AuthToken"]; // Haal token uit de cookie
 
-            // Retrieve the current user from TempData, which was set during login
-            ViewData["CurrentUser"] = TempData["CurrentUser"];
-            ViewData["Role"] = TempData["Role"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                try
+                {
+                    var handler = new JwtSecurityTokenHandler();
+                    var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
 
-            // Return the view with the list of users
-            return View(users);
+                    if (jsonToken != null)
+                    {
+                        ViewData["CurrentUser"] = jsonToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+                        ViewData["Role"] = jsonToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("[LoginController]\n Index > Invalid token format");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"[LoginController]\n Index > Token error:\n{ex.Message}");
+                }
+            }
+            else
+            {
+                Debug.WriteLine("[LoginController]\n Index > No token found in cookies");
+            }
+
+            return View();
         }
     }
 }
