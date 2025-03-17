@@ -1,33 +1,29 @@
 ﻿document.addEventListener("DOMContentLoaded", function ()
 {
-    // Get all rows in the table
-    var tableRows = document.querySelectorAll("tbody tr");
+    const tableBody = document.getElementById("userTableBody");
 
-    // Add a click event listener to each row
-    tableRows.forEach(function (row)
+    // Exit if the table body does not exist
+    if (!tableBody) return;
+
+    // Add a click event listener to the table body (Event Delegation)
+    tableBody.addEventListener("click", function (event)
     {
-        row.addEventListener("click", function (event)
-        {
-            // Remove the highlight class from all rows
-            tableRows.forEach(function (r)
-            {
-                r.classList.remove("highlight-row");  // Removes the highlight class
-            });
+        const row = event.target.closest("tr"); // Find the nearest <tr> element
+        if (!row) return; // Exit if no row was clicked
 
-            // Add the highlight class to the clicked row
-            row.classList.add("highlight-row");  // Adds the highlight class to the clicked row
+        // Remove highlight from all rows
+        document.querySelectorAll("tbody tr").forEach(r => r.classList.remove("highlight-row"));
 
-            // Prevent the click event from propagating to the document
-            event.stopPropagation();
-        });
+        // Add highlight to the clicked row
+        row.classList.add("highlight-row");
     });
 
-    // Add a click event listener to the document to reset the background color when clicked outside the table
-    document.addEventListener("click", function ()
+    // Remove highlight when clicking outside the table
+    document.addEventListener("click", function (event)
     {
-        tableRows.forEach(function (row)
+        if (!tableBody.contains(event.target))
         {
-            row.classList.remove("highlight-row");  // Reset background color
-        });
+            document.querySelectorAll("tbody tr").forEach(row => row.classList.remove("highlight-row"));
+        }
     });
 });
