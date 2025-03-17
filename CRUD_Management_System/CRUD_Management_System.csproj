@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="ILogger\CreatedAccounts\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Logs\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
 

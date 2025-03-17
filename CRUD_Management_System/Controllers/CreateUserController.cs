@@ -8,18 +8,20 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Linq;
+using Serilog;
+using Mysqlx;
 
 public class CreateUserController : Controller
 {
     private readonly AppDbContext _context;
     private readonly AliasService _aliasService;
-    private readonly ILogger<CreateUserController> _logger;
+    private readonly LogNewUserService _logNewUserService;
 
-    public CreateUserController(AppDbContext context, AliasService aliasService, ILogger<CreateUserController> logger)
+    public CreateUserController(AppDbContext context, AliasService aliasService, LogNewUserService logNewUserService)
     {
         _context = context;
         _aliasService = aliasService;
-        _logger = logger;
+        _logNewUserService = logNewUserService;
     }
 
     public IActionResult Index()
@@ -36,10 +38,19 @@ public class CreateUserController : Controller
         // Alias genereren
         newUser.Alias = await _aliasService.CreateTXTAlias(newUser.Name, newUser.Surname);
 
+        // Haal de huidige gebruiker op die de actie uitvoert
+        var currentUser = User.Identity?.IsAuthenticated == true ? User.Identity.Name : "Unknown";
+
         if (!ModelState.IsValid)
         {
+            // Haal het huidige foutbericht op
+            var errors = string.Join("; ", ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage));
+
             // Log fouten bij mislukte validatie
-            LogModelStateErrors();
+            _logNewUserService.LogUserCreationError(errors, currentUser);
+
             TempData["ErrorMessage"] = "An error occurred while creating the user.";
             return View("Index", newUser);
         }
@@ -51,8 +62,8 @@ public class CreateUserController : Controller
         // Nieuwe user login record
         var newUserLogin = CreateUserLogin(newUser, hashedPassword);
 
-        // Log de details voor debugging
-        LogUserDetails(newUserLogin, generatedPassword);
+        // Log de details voor debugging via de LogUserService
+        _logNewUserService.LogUserDetails(newUserLogin, generatedPassword, currentUser);
 
         // Gebruiker toevoegen aan beide tabellen
         await AddUserToDatabase(newUser, newUserLogin);
@@ -76,14 +87,6 @@ public class CreateUserController : Controller
         newUser.Phonenumber = string.IsNullOrWhiteSpace(newUser.Phonenumber) ? string.Empty : newUser.Phonenumber;
     }
 
-    private void LogModelStateErrors()
-    {
-        foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-        {
-            _logger.LogError("Validation Error: " + error.ErrorMessage);
-        }
-    }
-
     private UserLoginModel CreateUserLogin(UserDetailsModel newUser, string hashedPassword)
     {
         return new UserLoginModel
@@ -94,22 +97,6 @@ public class CreateUserController : Controller
             OnlineStatus = false,
             TheOne = false
         };
-    }
-
-    private void LogUserDetails(UserLoginModel newUserLogin, string generatedPassword)
-    {
-        // Haal de huidige gebruiker op die de actie uitvoert
-        var currentUser = User.Identity?.IsAuthenticated == true ? User.Identity.Name : "Unknown";
-
-        // Log de details van de nieuwe gebruiker
-        _logger.LogInformation("[ NEW USER ACCOUNT ]");
-        _logger.LogInformation($"Date: {DateTime.Now:dd-MM-yyyy HH:mm:ss}");  // Datum en tijd
-        _logger.LogInformation($"Created by: {currentUser}");  // De gebruiker die de actie uitvoert
-        _logger.LogInformation($"AliasId: {newUserLogin.AliasId}");  // Alias van de nieuwe gebruiker
-        _logger.LogInformation($"Password: {generatedPassword}");  // Het gegenereerde wachtwoord
-        _logger.LogInformation($"Admin: {newUserLogin.Admin}");  // Admin status
-        _logger.LogInformation($"OnlineStatus: {newUserLogin.OnlineStatus}");  // Online status
-        _logger.LogInformation($"TheOne: {newUserLogin.TheOne}");  // TheOne status
     }
 
     private async Task AddUserToDatabase(UserDetailsModel newUser, UserLoginModel newUserLogin)

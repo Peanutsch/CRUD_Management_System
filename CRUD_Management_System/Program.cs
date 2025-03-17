@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Serilog;
 using Microsoft.Extensions.Logging;
+using Serilog.Events;
 
 #region [BUILDERS]
 var builder = WebApplication.CreateBuilder(args);
@@ -17,10 +18,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 // Voeg Serilog toe voor bestandslogging
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.File("Logs/CreatedAccounts/create_logs.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("ILogger/CreatedAccounts/created.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("ILogger/Errors/errors.txt", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: LogEventLevel.Error)  // Logs only errors and higher levels
     .CreateLogger();
 
-builder.Logging.ClearProviders();
+//builder.Logging.ClearProviders();
 builder.Logging.AddSerilog();  // Serilog wordt nu als logger gebruikt
 
 // Add services to the container.
@@ -41,11 +43,11 @@ builder.Logging.AddConsole(options =>
     options.LogToStandardErrorThreshold = LogLevel.Warning; // Ignore Entity Framework Core SQL-query logs
 });
 
-
 // Dependency Injection
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<AliasService>();
 builder.Services.AddScoped<PasswordUpdateService>(); // Zorg ervoor dat de PasswordUpdateService wordt geregistreerd
+builder.Services.AddScoped<LogNewUserService>();
 
 #region [JWT Authentication Config]
 // JWT Authentication configuration
@@ -112,5 +114,6 @@ app.MapControllerRoute(
     pattern: "{controller=Login}/{action=Index}/{id?}") // Login/Index is start page
     .WithStaticAssets();
 
+Log.Information("Applicatie is gestart");
 
 app.Run();
