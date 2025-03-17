@@ -57,11 +57,17 @@ public class CreateUserController : Controller
             return View("Index", newUser); // Redisplay the form with errors
         }
 
+        // Generate a password for the user
+        var generatedPassword = PasswordManager.PasswordGenerator();
+
+        // Hash the password using BCrypt
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(generatedPassword);
+
         // Create a new UserLoginModel for the Users table
         var newUserLogin = new UserLoginModel
         {
             AliasId = newUser.Alias,  // Use the generated alias as the AliasId
-            Password = PasswordManager.PasswordGenerator(),
+            Password = hashedPassword,
             Admin = false,  // Set the Admin flag to false
             OnlineStatus = false,  // Set the OnlineStatus flag to false
             TheOne = false  // Set TheOne flag to false
@@ -69,7 +75,7 @@ public class CreateUserController : Controller
 
         Debug.WriteLine("\n[ NEW USER ACCOUNT ]");
         Debug.WriteLine($"AliasId: {newUserLogin.AliasId}");
-        Debug.WriteLine($"Password: {newUserLogin.Password}");
+        Debug.WriteLine($"Password: {generatedPassword}");
         Debug.WriteLine($"Admin: {newUserLogin.Admin}");
         Debug.WriteLine($"OnlineStatus: {newUserLogin.OnlineStatus}");
         Debug.WriteLine($"TheOne: {newUserLogin.TheOne}\n");

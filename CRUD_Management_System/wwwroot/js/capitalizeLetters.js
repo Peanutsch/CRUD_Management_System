@@ -6,37 +6,46 @@
 
 function capitalizeZIPLetters(fieldId)
 {
-    let inputField = document.getElementById(fieldId)
+    let inputField = document.getElementById(fieldId);
     inputField.value = inputField.value.toUpperCase();
 }
 
 function capitalizeSurname(fieldId)
 {
     let inputField = document.getElementById(fieldId);
-    let words = inputField.value.toLowerCase().split(" ");
+    let words = inputField.value.split(" ");  // Split the input into words
 
     let tussenvoegsels = [
-                            "van", "de", "den", "der", "het", "in", "te", "ten", "op", "aan",
-                            "de la", "de l", "de", "du", "la", "le", "ter", "t'", "von", "zu",
-                            "van der", "van den", "van de", "d'", "'t"
-                         ];
+        "'t", "t'", "'l", "de", "in", "te", "op", "du", "la", "le",
+        "van", "den", "der", "het", "ten", "ter", "aan", "von", "zu", "zum",
+        "de", "de l", "de la", "d'", "l'"
+    ];
 
-    let formattedSurname = words.map((word, index, arr) =>
+    let formattedSurname = words.map(word =>
     {
-        // Eerste of laatste woord krijgt een hoofdletter, tussenvoegsels blijven klein
-        if (index === 0 || index === arr.length - 1 || !tussenvoegsels.includes(word))
+        let lowerWord = word.toLowerCase();  // Convert to lowercase for comparison
+
+        // If the word is a tussenvoegsel, make it lowercase
+        if (!tussenvoegsels.includes(lowerWord))
         {
-            return word.charAt(0).toUpperCase() + word.slice(1);
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        } else
+        {
+            return lowerWord;  // Keep the word lowercase
         }
-        return word;
     }).join(" ");
 
-    inputField.value = formattedSurname;
+    inputField.value = formattedSurname;  // Update the field with the formatted surname
 }
+
 
 document.getElementById("Name").addEventListener("input", function ()
 {
     capitalizeFirstLetter("Name");
+});
+document.getElementById("Surname").addEventListener("input", function ()
+{
+    capitalizeSurname("Surname");
 });
 document.getElementById("Address").addEventListener("input", function ()
 {
@@ -50,8 +59,3 @@ document.getElementById("ZIP").addEventListener("input", function ()
 {
     capitalizeZIPLetters("ZIP");
 });
-document.getElementById("Surname").addEventListener("input", function ()
-{
-    capitalizeSurname("Surname");
-});    
-
