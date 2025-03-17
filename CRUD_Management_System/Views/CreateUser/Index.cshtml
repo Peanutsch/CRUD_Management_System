@@ -25,10 +25,12 @@
         <div>
             <label for="Name">Naam</label>
             <input type="text" asp-for="Name" id="Name" oninput="generateAlias()" required />
+            <small class="form-text text-muted">* Required</small>
         </div>
         <div>
             <label for="Surname">Achternaam</label>
             <input type="text" asp-for="Surname" id="Surname" oninput="generateAlias()" required />
+            <small class="form-text text-muted">* Required. Prefixes are saved in lowercase</small>
         </div>
     </div>
 
@@ -51,6 +53,7 @@
         <div>
             <label for="Email">E-mail</label>
             <input type="email" asp-for="Email" id="Email" required />
+            <small class="form-text text-muted">* Required</small>
         </div>
         <div>
             <label for="Phonenumber">Telefoonnummer</label>
@@ -62,7 +65,7 @@
             class="btn btn-success"
             id="saveCreateUserButton"
             data-alias="Alias">
-        Opslaan
+            Opslaan
     </button>
     <a asp-controller="DashboardAdmin" asp-action="Index" class="btn btn-secondary">Annuleren</a>
 </form>
@@ -77,3 +80,4 @@
 <script src="~/js/generateAlias.js"></script>
 <script src="~/js/capitalizeLetters.js"></script>
 <script src="~/js/confirmation.js"></script>
+<script src="~/js/verifyCreateUserForm.js"></script>

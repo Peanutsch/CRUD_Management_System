@@ -7,11 +7,21 @@ using CRUD_Management_System.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 #region [BUILDERS]
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Voeg Serilog toe voor bestandslogging
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("Logs/CreatedAccounts/create_logs.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog();  // Serilog wordt nu als logger gebruikt
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -1,108 +1,121 @@
 ﻿using CRUD_Management_System.Data;
 using CRUD_Management_System.Models;
 using CRUD_Management_System.Encryption;
-using CRUD_Management_System.Services; // Don't forget to add the appropriate namespace for the service
+using CRUD_Management_System.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Linq;
 
 public class CreateUserController : Controller
 {
     private readonly AppDbContext _context;
     private readonly AliasService _aliasService;
+    private readonly ILogger<CreateUserController> _logger;
 
-    /// <summary>
-    /// Initializes the controller with the necessary services for database access and alias generation.
-    /// </summary>
-    /// <param name="context">Database context for accessing the user data.</param>
-    /// <param name="aliasService">Service for generating user aliases.</param>
-    public CreateUserController(AppDbContext context, AliasService aliasService)
+    public CreateUserController(AppDbContext context, AliasService aliasService, ILogger<CreateUserController> logger)
     {
         _context = context;
         _aliasService = aliasService;
+        _logger = logger;
     }
 
-    /// <summary>
-    /// Displays the form for creating a new user.
-    /// </summary>
-    /// <returns>The view for creating a new user.</returns>
     public IActionResult Index()
     {
-        return View(); // Display the form for the new user creation
+        return View();
     }
 
-    /// <summary>
-    /// Processes the form and saves the new user to the database.
-    /// Generates a unique alias for the user and stores both user details and login information.
-    /// </summary>
-    /// <param name="newUser">The new user details to be saved.</param>
-    /// <returns>A redirect to the dashboard if successful, or the same form with errors if validation fails.</returns>
     [HttpPost]
     public async Task<IActionResult> CreateUser(UserDetailsModel newUser)
     {
-        // Generate the alias for the new user using the alias service
+        // Velden leeg controleren
+        CleanUserFields(newUser);
+
+        // Alias genereren
         newUser.Alias = await _aliasService.CreateTXTAlias(newUser.Name, newUser.Surname);
 
         if (!ModelState.IsValid)
         {
-            // Log errors if there are validation issues
-            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-            {
-                Debug.WriteLine(error.ErrorMessage);
-            }
-
-            // Display an error message and return to the form with validation issues
+            // Log fouten bij mislukte validatie
+            LogModelStateErrors();
             TempData["ErrorMessage"] = "An error occurred while creating the user.";
-            return View("Index", newUser); // Redisplay the form with errors
+            return View("Index", newUser);
         }
 
-        // Generate a password for the user
+        // Genereer en hash het wachtwoord
         var generatedPassword = PasswordManager.PasswordGenerator();
-
-        // Hash the password using BCrypt
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(generatedPassword);
 
-        // Create a new UserLoginModel for the Users table
-        var newUserLogin = new UserLoginModel
-        {
-            AliasId = newUser.Alias,  // Use the generated alias as the AliasId
-            Password = hashedPassword,
-            Admin = false,  // Set the Admin flag to false
-            OnlineStatus = false,  // Set the OnlineStatus flag to false
-            TheOne = false  // Set TheOne flag to false
-        };
+        // Nieuwe user login record
+        var newUserLogin = CreateUserLogin(newUser, hashedPassword);
 
-        Debug.WriteLine("\n[ NEW USER ACCOUNT ]");
-        Debug.WriteLine($"AliasId: {newUserLogin.AliasId}");
-        Debug.WriteLine($"Password: {generatedPassword}");
-        Debug.WriteLine($"Admin: {newUserLogin.Admin}");
-        Debug.WriteLine($"OnlineStatus: {newUserLogin.OnlineStatus}");
-        Debug.WriteLine($"TheOne: {newUserLogin.TheOne}\n");
+        // Log de details voor debugging
+        LogUserDetails(newUserLogin, generatedPassword);
 
+        // Gebruiker toevoegen aan beide tabellen
+        await AddUserToDatabase(newUser, newUserLogin);
 
-        // Add the new user to both the UserDetails and Users tables in the database
-        _context.Users.Add(newUserLogin); // Add to the Users table (login info)
-        _context.UserDetails.Add(newUser); // Add to the UserDetails table (personal info)
-        await _context.SaveChangesAsync(); // Save the changes to the database
-
-        // Redirect to the Admin Dashboard after successful creation
+        // Redirect naar de Admin Dashboard na succesvolle creatie
         return RedirectToAction("Index", "DashboardAdmin");
     }
 
-    /// <summary>
-    /// Generates a unique alias based on the provided name and surname.
-    /// </summary>
-    /// <param name="name">The first name of the user.</param>
-    /// <param name="surname">The surname of the user.</param>
-    /// <returns>A JSON response with the generated alias.</returns>
     [HttpPost]
     public async Task<IActionResult> GenerateAlias(string name, string surname)
     {
-        // Generate a unique alias using the AliasService
         var alias = await _aliasService.CreateTXTAlias(name, surname);
-
-        // Return the alias as a JSON response
         return Json(alias);
+    }
+
+    private void CleanUserFields(UserDetailsModel newUser)
+    {
+        newUser.Address = string.IsNullOrWhiteSpace(newUser.Address) ? string.Empty : newUser.Address;
+        newUser.ZIP = string.IsNullOrWhiteSpace(newUser.ZIP) ? string.Empty : newUser.ZIP;
+        newUser.City = string.IsNullOrWhiteSpace(newUser.City) ? string.Empty : newUser.City;
+        newUser.Phonenumber = string.IsNullOrWhiteSpace(newUser.Phonenumber) ? string.Empty : newUser.Phonenumber;
+    }
+
+    private void LogModelStateErrors()
+    {
+        foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+        {
+            _logger.LogError("Validation Error: " + error.ErrorMessage);
+        }
+    }
+
+    private UserLoginModel CreateUserLogin(UserDetailsModel newUser, string hashedPassword)
+    {
+        return new UserLoginModel
+        {
+            AliasId = newUser.Alias,
+            Password = hashedPassword,
+            Admin = false,
+            OnlineStatus = false,
+            TheOne = false
+        };
+    }
+
+    private void LogUserDetails(UserLoginModel newUserLogin, string generatedPassword)
+    {
+        // Haal de huidige gebruiker op die de actie uitvoert
+        var currentUser = User.Identity?.IsAuthenticated == true ? User.Identity.Name : "Unknown";
+
+        // Log de details van de nieuwe gebruiker
+        _logger.LogInformation("[ NEW USER ACCOUNT ]");
+        _logger.LogInformation($"Date: {DateTime.Now:dd-MM-yyyy HH:mm:ss}");  // Datum en tijd
+        _logger.LogInformation($"Created by: {currentUser}");  // De gebruiker die de actie uitvoert
+        _logger.LogInformation($"AliasId: {newUserLogin.AliasId}");  // Alias van de nieuwe gebruiker
+        _logger.LogInformation($"Password: {generatedPassword}");  // Het gegenereerde wachtwoord
+        _logger.LogInformation($"Admin: {newUserLogin.Admin}");  // Admin status
+        _logger.LogInformation($"OnlineStatus: {newUserLogin.OnlineStatus}");  // Online status
+        _logger.LogInformation($"TheOne: {newUserLogin.TheOne}");  // TheOne status
+    }
+
+    private async Task AddUserToDatabase(UserDetailsModel newUser, UserLoginModel newUserLogin)
+    {
+        _context.Users.Add(newUserLogin);
+        _context.UserDetails.Add(newUser);
+        await _context.SaveChangesAsync();
     }
 }
