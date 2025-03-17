@@ -63,10 +63,10 @@ public class AliasService
     }
 
     /// <summary>
-    /// Removes diacritical marks from a given string.
+    /// Removes diacritics, punctuation, and unwanted characters from the input string.
     /// </summary>
-    /// <param name="text">The input string containing diacritics.</param>
-    /// <returns>A string without diacritics.</returns>
+    /// <param name="text">The input string with potential diacritics, punctuation, and unwanted characters.</param>
+    /// <returns>A string without diacritics, punctuation, and unwanted characters.</returns>
     private string RemoveDiacritics(string text)
     {
         var normalizedString = text.Normalize(NormalizationForm.FormD);
@@ -75,7 +75,12 @@ public class AliasService
         foreach (var chars in normalizedString)
         {
             var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(chars);
-            if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+            if (
+                  unicodeCategory == UnicodeCategory.LowercaseLetter
+               || unicodeCategory == UnicodeCategory.UppercaseLetter
+               || unicodeCategory == UnicodeCategory.DecimalDigitNumber
+               )
+                //|| unicodeCategory == UnicodeCategory.SpaceSeparator)
             {
                 stringBuilder.Append(chars);
             }
