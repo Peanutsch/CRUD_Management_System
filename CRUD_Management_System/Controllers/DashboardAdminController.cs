@@ -3,20 +3,23 @@ using Microsoft.EntityFrameworkCore;
 using CRUD_Management_System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Diagnostics;
+using CRUD_Management_System.Services;
 
 namespace CRUD_Management_System.Controllers
 {
     public class DashboardAdminController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly LogService _logService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DashboardAdminController"/> class.
         /// </summary>
         /// <param name="context">Database context for accessing user data.</param>
-        public DashboardAdminController(AppDbContext context)
+        public DashboardAdminController(AppDbContext context, LogService logService)
         {
             _context = context;
+            this._logService = logService;
         }
 
         /// <summary>
@@ -40,6 +43,8 @@ namespace CRUD_Management_System.Controllers
                     {
                         ViewData["CurrentUser"] = jsonToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
                         ViewData["Role"] = jsonToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+
+                        //ViewData["CurrentUser"] = User.Identity?.Name ?? "Unknown";
                     }
                     else
                     {

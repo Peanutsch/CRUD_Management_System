@@ -10,6 +10,7 @@ using System.Text;
 using Serilog;
 using Microsoft.Extensions.Logging;
 using Serilog.Events;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 #region [BUILDERS]
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +19,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 // Voeg Serilog toe voor bestandslogging
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.File("ILogger/CreatedAccounts/created.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("ILogger/Logbook/logbook.txt", rollingInterval: RollingInterval.Day)
     .WriteTo.File("ILogger/Errors/errors.txt", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: LogEventLevel.Error)  // Logs only errors and higher levels
     .CreateLogger();
 
@@ -47,7 +48,14 @@ builder.Logging.AddConsole(options =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<AliasService>();
 builder.Services.AddScoped<PasswordUpdateService>(); // Zorg ervoor dat de PasswordUpdateService wordt geregistreerd
-builder.Services.AddScoped<LogNewUserService>();
+builder.Services.AddScoped<LogService>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/Index";
+        options.AccessDeniedPath = "/Login/Index";
+    });
 
 #region [JWT Authentication Config]
 // JWT Authentication configuration
@@ -67,7 +75,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 #endregion [JWT Authentication Config]
 
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
+
 #endregion [BUILDERS]
 
 #region [Encrypt Passwords with BCrypt]
@@ -104,7 +115,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -113,7 +124,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Index}/{id?}") // Login/Index is start page
     .WithStaticAssets();
-
-Log.Information("Applicatie is gestart");
 
 app.Run();

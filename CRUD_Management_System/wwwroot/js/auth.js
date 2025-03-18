@@ -7,7 +7,7 @@
         if (response.token)
         {
             // Store the token in an HttpOnly cookie. The cookie will be valid for 24 hours (86400000 ms)
-            document.cookie = `AuthToken=${response.token}; Secure; HttpOnly; SameSite=Strict; expires=${new Date(Date.now() + 86400000).toUTCString()}; path=/`;
+            document.cookie = `AuthToken=${response.token}; Secure; SameSite=Strict; expires=${new Date(Date.now() + 86400000).toUTCString()}; path=/`;
         } else
         {
             console.warn("[auth.js]\n handleLogin > No token received at login...");
