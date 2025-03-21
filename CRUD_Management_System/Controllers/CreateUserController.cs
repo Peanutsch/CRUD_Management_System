@@ -31,6 +31,19 @@ public class CreateUserController : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult> GenerateAlias([FromBody] AliasRequestModel request)
+    {
+        if (string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(request.Surname))
+        {
+            return BadRequest("Name and surname are required.");
+        }
+
+        var generatedAlias = await _aliasService.CreateTXTAlias(request.Name, request.Surname);
+
+        return Ok(generatedAlias);
+    }
+
+    [HttpPost]
     [Authorize]
     public async Task<IActionResult> CreateUser([FromBody] UserDetailsModel newUser)
     {
@@ -43,8 +56,6 @@ public class CreateUserController : Controller
 
             return BadRequest(new { success = false, message = "Validation failed", errors });
         }
-
-        Debug.WriteLine($"[DEBUG CreateUser] Name: {newUser.Name}, Surname: {newUser.Surname}, Alias: {newUser.Alias}");
 
         // Alias genereren als deze niet is meegegeven door de frontend
         if (string.IsNullOrEmpty(newUser.Alias))
@@ -60,7 +71,7 @@ public class CreateUserController : Controller
         var newUserLogin = CreateUserLogin(newUser, hashedPassword);
 
         // Log user creationS;
-        _logService.LogNewUserDetails(newUserLogin, generatedPassword, User.Identity?.Name ?? "Unknown");
+        _logService.LogNewUserDetails(newUserLogin, newUser,generatedPassword, User.Identity?.Name ?? "Unknown");
 
         await AddUserToDatabase(newUser, newUserLogin);
 

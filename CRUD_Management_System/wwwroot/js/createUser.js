@@ -12,7 +12,11 @@
             Name: document.getElementById("Name").value.trim(),
             Surname: document.getElementById("Surname").value.trim(),
             Email: document.getElementById("Email").value.trim(),
-            Alias: document.getElementById("Alias").value.trim()
+            Alias: document.getElementById("Alias").value.trim(),
+            Address: document.getElementById("Address").value.trim(),
+            ZIP: document.getElementById("ZIP").value.trim(),
+            City: document.getElementById("City").value.trim(),
+            PhoneNumber: document.getElementById("Phonenumber").value.trim()
         };
 
         console.log(`[DEBUG CreateUser] Name: ${newUser.Name}, Surname: ${newUser.Surname}, Alias: ${newUser.Alias}`);

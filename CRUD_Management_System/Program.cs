@@ -19,15 +19,21 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 // Voeg Serilog toe voor bestandslogging
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.File("ILogger/Logbook/logbook.txt", rollingInterval: RollingInterval.Day)
-    .WriteTo.File("ILogger/Errors/errors.txt", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: LogEventLevel.Error)  // Logs only errors and higher levels
+    .WriteTo.File("ILogger/Logbook/logbook.txt",
+                   rollingInterval: RollingInterval.Day,
+                   restrictedToMinimumLevel: LogEventLevel.Information,
+                   outputTemplate: "[{Timestamp:dd/MM/yyyy}] [{Timestamp:HH:mm:ss}]{Message:lj}{NewLine}")
+    .WriteTo.File("ILogger/Errors/errors.txt",
+                   rollingInterval: RollingInterval.Day,
+                   restrictedToMinimumLevel: LogEventLevel.Error,
+                   outputTemplate: "[{Timestamp:dd/MM/yyyy}] [{Timestamp:HH:mm:ss}]{Message:lj}{NewLine}")  // Logs only errors and higher levels
     .CreateLogger();
 
 //builder.Logging.ClearProviders();
 builder.Logging.AddSerilog();  // Serilog wordt nu als logger gebruikt
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql
@@ -49,6 +55,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<AliasService>();
 builder.Services.AddScoped<PasswordUpdateService>(); // Zorg ervoor dat de PasswordUpdateService wordt geregistreerd
 builder.Services.AddScoped<LogService>();
+builder.Services.AddScoped<LoginController>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -74,6 +81,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 #endregion [JWT Authentication Config]
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthorization();
 

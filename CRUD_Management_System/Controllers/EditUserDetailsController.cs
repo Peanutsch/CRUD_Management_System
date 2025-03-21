@@ -1,20 +1,24 @@
 ﻿using CRUD_Management_System.Data;
 using CRUD_Management_System.Models;
+using CRUD_Management_System.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
 public class EditUserDetailsController : Controller
 {
     private readonly AppDbContext _context;
+    private readonly LogService _logService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EditUserDetailsController"/> class.
     /// </summary>
     /// <param name="context">Database context for accessing user data.</param>
-    public EditUserDetailsController(AppDbContext context)
+    public EditUserDetailsController(AppDbContext context, LogService logService)
     {
         _context = context;
+        _logService = logService;
     }
 
     /// <summary>
@@ -69,6 +73,14 @@ public class EditUserDetailsController : Controller
         user.Sick = updatedUser.Sick;
 
         await _context.SaveChangesAsync();
+
+        var token = Request.Cookies["AuthToken"];
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+
+        var currentUser = jsonToken!.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+        _logService.LogEditUserDetails(updatedUser, currentUser!);
+
         return RedirectToAction("Index", "DashboardAdmin");
     }
 }
