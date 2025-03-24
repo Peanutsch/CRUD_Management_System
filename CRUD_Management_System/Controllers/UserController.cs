@@ -1,21 +1,25 @@
 ﻿using CRUD_Management_System.Data;
 using CRUD_Management_System.Models;
+using CRUD_Management_System.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
 public class UserController : Controller
 {
     private readonly AppDbContext _context;
+    private readonly LogService _logService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserController"/> class.
     /// </summary>
     /// <param name="context">The database context for accessing user data.</param>
-    public UserController(AppDbContext context)
+    public UserController(AppDbContext context, LogService logService)
     {
         _context = context;
+        _logService = logService;
     }
 
     /// <summary>
@@ -83,6 +87,11 @@ public class UserController : Controller
         _context.Users.Remove(user);
         _context.UserDetails.Remove(userDetails);
         await _context.SaveChangesAsync();
+
+        var token = Request.Cookies["AuthToken"];
+        var (currentUser, userRole) = LoginController.GetUserFromToken(token!);
+
+        _logService.LogDeleteUserAccount(currentUser!, user.AliasId);
 
         return Ok(new { success = true, message = "User successfully deleted." });
     }

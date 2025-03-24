@@ -1,0 +1,15 @@
+[24/03/2025] [10:45:54] [TEST LogLogin]
+            test Log.Error
+            
+[24/03/2025] [10:48:32] [TEST LogLogin]
+            test Log.Error
+            
+[24/03/2025] [10:51:33] [TEST LogLogin]
+            test Log.Error
+            
+[24/03/2025] [10:54:33] [TEST LogLogin]
+            test Log.Error
+            
+[24/03/2025] [10:54:43] [TEST LogDeleteUserAccount]
+            test Log.Error
+            

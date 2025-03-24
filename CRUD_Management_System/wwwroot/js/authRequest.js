@@ -71,6 +71,7 @@ function displayUsers(users)
     `).join(""); // Join the array into a single HTML string and update the table body
 }
 
+/*
 // Event delegation to handle delete button clicks dynamically
 document.addEventListener("click", function (event)
 {
@@ -82,3 +83,4 @@ document.addEventListener("click", function (event)
     // Call the function to show the delete confirmation
     showDeleteConfirmation(alias, deleteButton, deleteUser);
 });
+*/

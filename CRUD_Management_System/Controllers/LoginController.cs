@@ -70,7 +70,7 @@ public class LoginController : Controller
                 });
                 
                 var (currentUser, userRole) = GetUserFromToken(token); // Get user and role
-                _logService.LogLogin(currentUser.ToUpper());           // Log the login with both username and role
+                _logService.LogLogin(currentUser.ToUpper(), userRole);           // Log the login with both username and role
 
                 return Ok(new { token });  // Return the token as part of the response to the client
             }
@@ -79,7 +79,7 @@ public class LoginController : Controller
         return View(model);  // If the login fails, return the login view with the model
     }
 
-    private static (string currentUser, string userRole) GetUserFromToken(string token)
+    public static (string currentUser, string userRole) GetUserFromToken(string token)
     {
         var jsonToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
         var userRole = jsonToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value ?? "Unknown";
@@ -97,9 +97,9 @@ public class LoginController : Controller
         // Define the claims (user-specific information) to be included in the JWT token
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.AliasId),  // AliasId (username) as the subject of the token
-            new Claim(ClaimTypes.Name, user.AliasId),  // Name claim: AliasId (username)
-            new Claim("role", user.Admin ? "admin" : "user"),  // Role claim: "admin" if the user is an admin, otherwise "user"
+            new Claim(JwtRegisteredClaimNames.Sub, user.AliasId),   // AliasId (username) as the subject of the token
+            new Claim(ClaimTypes.Name, user.AliasId),               // Name claim: AliasId (username)
+            new Claim("role", user.Admin ? "admin" : "user"),       // Role claim: "admin" if the user is an admin, otherwise "user"
         };
 
         // Create a symmetric security key based on the secret key from the appsettings.json
@@ -108,11 +108,11 @@ public class LoginController : Controller
 
         // Create the JWT token with claims, expiration date, and signing credentials
         var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],  // Issuer of the token (usually the API server)
-            audience: _configuration["Jwt:Audience"],  // Intended audience for the token (client apps)
-            claims: claims,  // Include the user-specific claims (AliasId, role)
-            expires: DateTime.Now.AddDays(1),  // Token expires in 1 day
-            signingCredentials: creds  // Sign the token using the credentials
+            issuer: _configuration["Jwt:Issuer"],       // Issuer of the token (usually the API server)
+            audience: _configuration["Jwt:Audience"],   // Intended audience for the token (client apps)
+            claims: claims,                             // Include the user-specific claims (AliasId, role)
+            expires: DateTime.Now.AddDays(1),           // Token expires in 1 day
+            signingCredentials: creds                   // Sign the token using the credentials
         );
 
         // Convert the token to a string and return it

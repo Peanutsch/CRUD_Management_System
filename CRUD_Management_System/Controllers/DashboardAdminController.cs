@@ -41,10 +41,8 @@ namespace CRUD_Management_System.Controllers
 
                     if (jsonToken != null)
                     {
-                        ViewData["CurrentUser"] = jsonToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-                        ViewData["Role"] = jsonToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
-
-                        //ViewData["CurrentUser"] = User.Identity?.Name ?? "Unknown";
+                        ViewData["CurrentUser"] = jsonToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value.ToUpper();
+                        ViewData["Role"] = jsonToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value.ToUpper();
                     }
                     else
                     {
