@@ -41,6 +41,7 @@
             {
                 if (responseData.token)
                 {
+
                     handleLogin(responseData); // Token received, store it in the cookie
                     window.location.href = '/DashboardAdmin/Index'; // On successful login, redirect to the dashboard
                 } else

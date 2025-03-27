@@ -1,0 +1,30 @@
+[27/03/2025] [11:45:30] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:46:50] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:47:07] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:48:39] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:51:22] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:52:35] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:53:08] [TEST LogNewUserDetails]
+            test Log.Error
+            
+[27/03/2025] [11:58:26] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:58:34] [TEST LogEditUserDetails]
+            test Log.Error
+            
+[27/03/2025] [11:58:57] [TEST LogLogin]
+            test Log.Error
+            

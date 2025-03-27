@@ -25,7 +25,6 @@
         {
             if (data.success)
             {
-                alert("User created successfully!");
                 window.location.href = "/DashboardAdmin/Index";
             }
             else

@@ -18,7 +18,6 @@
             if (result.success)
             {
                 row.remove(); // Remove the row from the table
-                alert(result.message); // Show success message
             } else
             {
                 alert("Error deleting user: " + result.message); // Show error message
