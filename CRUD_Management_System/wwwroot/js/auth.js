@@ -41,9 +41,19 @@
             {
                 if (responseData.token)
                 {
-
-                    handleLogin(responseData); // Token received, store it in the cookie
-                    window.location.href = '/DashboardAdmin/Index'; // On successful login, redirect to the dashboard
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "success",
+                        title: "SUCCES!",
+                        html: `Login succes!`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() =>
+                    {
+                        handleLogin(responseData); // Token received, store it in the cookie
+                        window.location.href = '/DashboardAdmin/Index'; // On successful login, redirect to the dashboard
+                    });
                 } else
                 {
                     alert("[auth.js]\n ResponseData > Invalid login credentials"); // Invalid login

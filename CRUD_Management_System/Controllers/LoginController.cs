@@ -70,7 +70,9 @@ public class LoginController : Controller
                 });
 
                 var (currentUser, userRole) = GetUserFromToken(token); // Get user and role
-                _logService.LogLogin(currentUser.ToUpper(), userRole);           // Log the login with both username and role
+                _logService.LogLogin(currentUser.ToUpper(), userRole); // Log the login with both username and role
+
+                Debug.WriteLine($"[{userRole.ToUpper()}] [{currentUser.ToUpper()}] logged in...\n");
 
                 return Ok(new { token });  // Return the token as part of the response to the client
             }
@@ -123,15 +125,25 @@ public class LoginController : Controller
     [ValidateAntiForgeryToken]  // Add this for CSRF protection
     public IActionResult Logout()
     {
-        Debug.WriteLine("Running method Logout()");
+        Debug.WriteLine("[Running method Logout()]");
 
         // Remove AuthToken cookie
         Response.Cookies.Delete("AuthToken");
 
+
         // Remove Antiforgery cookie (if applicable)
         Response.Cookies.Delete("__RequestVerificationToken");
 
-        Debug.WriteLine("Removed Auth Token and Verification Token");
+        // Log Logout {userRole, currentUser}
+        var token = Request.Cookies["AuthToken"];
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+
+        var currentUser = jsonToken!.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+        var userRole = jsonToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value ?? "Unknown";
+        _logService.LogLogout(currentUser!, userRole);
+
+        Debug.WriteLine($"[{userRole.ToUpper()}] [{currentUser!.ToUpper()}] logged out...\n");
 
         return RedirectToAction("Index", "Login");  // Redirect to login page
     }

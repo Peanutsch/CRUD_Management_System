@@ -70,17 +70,3 @@ function displayUsers(users)
         </tr>
     `).join(""); // Join the array into a single HTML string and update the table body
 }
-
-/*
-// Event delegation to handle delete button clicks dynamically
-document.addEventListener("click", function (event)
-{
-    const deleteButton = event.target.closest(".delete-btn");
-    if (!deleteButton) return; // Ignore clicks that are not on a delete button
-
-    const alias = deleteButton.dataset.alias; // Retrieve the alias from the data attribute
-
-    // Call the function to show the delete confirmation
-    showDeleteConfirmation(alias, deleteButton, deleteUser);
-});
-*/

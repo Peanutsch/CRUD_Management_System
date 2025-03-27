@@ -1,33 +1,6 @@
 [27/03/2025] [11:45:30] [LOGIN] 
             [ADMIN] MIST001 logged in
             
-[27/03/2025] [11:45:30] [TEST LogLogin]
-            test Log.Error
-            
-[27/03/2025] [11:46:50] [LOGIN] 
-            [ADMIN] ADMIN logged in
-            
-[27/03/2025] [11:46:50] [TEST LogLogin]
-            test Log.Error
-            
-[27/03/2025] [11:47:07] [LOGIN] 
-            [ADMIN] ADMIN logged in
-            
-[27/03/2025] [11:47:07] [TEST LogLogin]
-            test Log.Error
-            
-[27/03/2025] [11:48:39] [LOGIN] 
-            [ADMIN] ADMIN logged in
-            
-[27/03/2025] [11:48:39] [TEST LogLogin]
-            test Log.Error
-            
-[27/03/2025] [11:51:22] [LOGIN] 
-            [ADMIN] ADMIN logged in
-            
-[27/03/2025] [11:51:22] [TEST LogLogin]
-            test Log.Error
-            
 [27/03/2025] [11:52:35] [LOGIN] 
             [ADMIN] ADMIN logged in
             
@@ -58,13 +31,86 @@
                 Cave Stone Road 347 8000 Bedrock
                 barney@rubble.com 555-9007
                 ---
-                
-[27/03/2025] [11:58:34] [TEST LogEditUserDetails]
-            test Log.Error
             
-[27/03/2025] [11:58:57] [LOGIN] 
+[27/03/2025] [12:22:00] [LOGIN] 
             [ADMIN] ADMIN logged in
             
-[27/03/2025] [11:58:57] [TEST LogLogin]
-            test Log.Error
+[27/03/2025] [12:22:32] [LOGOUT] 
+            admin [ADMIN] logged out
+            
+[27/03/2025] [12:22:46] [LOGIN] 
+            [ADMIN] MIST001 logged in
+            
+[27/03/2025] [12:23:06] [EDIT USERDETAILS by MIST001]
+                ---
+                arar001
+                Arianna Bear
+                Grace Street 1 00094 Quahog
+                arianna@bear.com 555-8765
+                ---
+                
+[27/03/2025] [12:23:16] [EDIT USERDETAILS by MIST001]
+                ---
+                baon001
+                Bart Simpson
+                Evergreen Terrace 742 23145 Springfield
+                bart@simpson.com 555-1313
+                ---
+                
+[27/03/2025] [12:24:06] [NEW USER ACCOUNT by [MIST001]]
+                AliasId: test001 Password: i5H0F3F2QqPO
+                ---
+                Test van der Test
+                Straat 11 1234 AA Stadtjesch
+                test@vandertest.nl 555-1234
+                ---
+            
+[27/03/2025] [12:24:15] [LOGOUT] 
+            admin [MIST001] logged out
+            
+[27/03/2025] [12:24:25] [LOGIN] 
+            [ADMIN] VIEP001 logged in
+            
+[27/03/2025] [12:25:15] [DELETE USER ACCOUNT by [VIEP001]]
+            User Account [TEST001] is deleted by [VIEP001]
+            
+[27/03/2025] [12:25:20] [LOGOUT] 
+            admin [VIEP001] logged out
+            
+[27/03/2025] [12:31:36] [LOGIN] 
+            [ADMIN] MIST001 logged in
+            
+[27/03/2025] [12:32:13] [NEW USER ACCOUNT by [MIST001]]
+                AliasId: teer002 Password: FR0f8FR6AvG1
+                ---
+                Testje de Fokker
+                Straat 1 1234 AA Stadtjesch
+                mail@mail.com 555-6969
+                ---
+            
+[27/03/2025] [12:32:22] [LOGOUT] 
+            [ADMIN] [MIST001] logged out
+            
+[27/03/2025] [12:32:30] [LOGIN] 
+            [ADMIN] VIEP001 logged in
+            
+[27/03/2025] [12:32:47] [EDIT USERDETAILS by VIEP001]
+                ---
+                teer002
+                Testje de Fokkertje
+                Straat 1 1234 AA Stadtjesch
+                mail@mail.com 555-6969
+                ---
+                
+[27/03/2025] [12:32:50] [LOGOUT] 
+            [ADMIN] [VIEP001] logged out
+            
+[27/03/2025] [12:32:58] [LOGIN] 
+            [ADMIN] MIST001 logged in
+            
+[27/03/2025] [12:33:08] [DELETE USER ACCOUNT by MIST001]
+            User Account [TEER002] is deleted by [MIST001]
+            
+[27/03/2025] [12:33:11] [LOGOUT] 
+            [ADMIN] [MIST001] logged out
             
