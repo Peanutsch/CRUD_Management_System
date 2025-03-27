@@ -1,0 +1,70 @@
+[27/03/2025] [11:45:30] [LOGIN] 
+            [ADMIN] MIST001 logged in
+            
+[27/03/2025] [11:45:30] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:46:50] [LOGIN] 
+            [ADMIN] ADMIN logged in
+            
+[27/03/2025] [11:46:50] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:47:07] [LOGIN] 
+            [ADMIN] ADMIN logged in
+            
+[27/03/2025] [11:47:07] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:48:39] [LOGIN] 
+            [ADMIN] ADMIN logged in
+            
+[27/03/2025] [11:48:39] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:51:22] [LOGIN] 
+            [ADMIN] ADMIN logged in
+            
+[27/03/2025] [11:51:22] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:52:35] [LOGIN] 
+            [ADMIN] ADMIN logged in
+            
+[27/03/2025] [11:52:35] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:53:08] [NEW USER ACCOUNT by [ADMIN]]
+                AliasId: foer001 Password: 8c3RRXBr0dGN
+                ---
+                Fokje de Modder
+                Straat 11 1234 AA Stad
+                fokje@demodder.nl 555-1234
+                ---
+            
+[27/03/2025] [11:53:08] [TEST LogNewUserDetails]
+            test Log.Error
+            
+[27/03/2025] [11:58:26] [LOGIN] 
+            [ADMIN] MIST001 logged in
+            
+[27/03/2025] [11:58:26] [TEST LogLogin]
+            test Log.Error
+            
+[27/03/2025] [11:58:34] [EDIT USERDETAILS by MIST001]
+                ---
+                bale001
+                Barney Rubble
+                Cave Stone Road 347 8000 Bedrock
+                barney@rubble.com 555-9007
+                ---
+                
+[27/03/2025] [11:58:34] [TEST LogEditUserDetails]
+            test Log.Error
+            
+[27/03/2025] [11:58:57] [LOGIN] 
+            [ADMIN] ADMIN logged in
+            
+[27/03/2025] [11:58:57] [TEST LogLogin]
+            test Log.Error
+            

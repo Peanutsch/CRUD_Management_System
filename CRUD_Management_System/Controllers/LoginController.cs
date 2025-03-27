@@ -68,7 +68,7 @@ public class LoginController : Controller
                     SameSite = SameSiteMode.Strict,         // Restrict the cookie to same-site requests only
                     Path = "/"                              // Cookie is accessible for all pages in the application
                 });
-                
+
                 var (currentUser, userRole) = GetUserFromToken(token); // Get user and role
                 _logService.LogLogin(currentUser.ToUpper(), userRole);           // Log the login with both username and role
 
@@ -118,4 +118,22 @@ public class LoginController : Controller
         // Convert the token to a string and return it
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]  // Add this for CSRF protection
+    public IActionResult Logout()
+    {
+        Debug.WriteLine("Running method Logout()");
+
+        // Remove AuthToken cookie
+        Response.Cookies.Delete("AuthToken");
+
+        // Remove Antiforgery cookie (if applicable)
+        Response.Cookies.Delete("__RequestVerificationToken");
+
+        Debug.WriteLine("Removed Auth Token and Verification Token");
+
+        return RedirectToAction("Index", "Login");  // Redirect to login page
+    }
+
 }
