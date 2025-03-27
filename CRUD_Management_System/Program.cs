@@ -7,6 +7,7 @@ using CRUD_Management_System.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Diagnostics;
 using Serilog;
 using Microsoft.Extensions.Logging;
 using Serilog.Events;
@@ -134,5 +135,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Index}/{id?}") // Login/Index is start page
     .WithStaticAssets();
+
+Debug.WriteLine("[APPLICATION STARTED]\n");
 
 app.Run();

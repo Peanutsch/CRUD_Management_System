@@ -36,10 +36,6 @@ namespace CRUD_Management_System.Services
                 ---
                 ");
             }
-            Log.Error(
-            @$" [TEST LogNewUserDetails]
-            test Log.Error
-            "); 
         }
 
         public void LogEditUserDetails(UserDetailsModel updatedUser, string currentUser)
@@ -68,10 +64,6 @@ namespace CRUD_Management_System.Services
                 ---
                 ");
             }
-            Log.Error(
-            @$" [TEST LogEditUserDetails]
-            test Log.Error
-            ");
         }
 
         public void LogDeleteUserAccount(string currentUser, string deletedUser)
@@ -79,7 +71,7 @@ namespace CRUD_Management_System.Services
             if (!string.IsNullOrEmpty(currentUser) && !string.IsNullOrEmpty(deletedUser))
             {
             Log.Information(
-            $@" [DELETE USER ACCOUNT by [{currentUser.ToUpper()}]]
+            $@" [DELETE USER ACCOUNT by {currentUser.ToUpper()}]
             User Account [{deletedUser.ToUpper()}] is deleted by [{currentUser.ToUpper()}]
             ");
             }
@@ -90,10 +82,6 @@ namespace CRUD_Management_System.Services
             User Account [{deletedUser.ToUpper()}] is deleted by [{currentUser.ToUpper()}]
             ");
             }
-            Log.Error(
-            @$" [TEST LogDeleteUserAccount]
-            test Log.Error
-            ");
         }
 
         public void LogLogin(string currentUser, string userRole)
@@ -102,23 +90,13 @@ namespace CRUD_Management_System.Services
             (@$" [LOGIN] 
             [{userRole.ToUpper()}] {currentUser.ToUpper()} logged in
             ");
-
-            Log.Error(
-            @$" [TEST LogLogin]
-            test Log.Error
-            ");
         }
 
         public void LogLogout(string currentUser, string userRole)
         {
             Log.Information
             (@$" [LOGOUT] 
-            {userRole} [{currentUser.ToUpper()}] logged out
-            ");
-
-            Log.Error(
-            @$" [TEST LogLout]
-            test Log.Error
+            [{userRole.ToUpper()}] [{currentUser.ToUpper()}] logged out
             ");
         }
     }

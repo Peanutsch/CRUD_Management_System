@@ -25,7 +25,7 @@
                         toast: true,
                         position: "top-end",
                         icon: "success",
-                        title: "Succes!",
+                        title: "SUCCES!",
                         html: `Changes for <strong>[${alias.toUpperCase()}]</strong> are saved!`,
                         showConfirmButton: false,
                         timer: 1500
@@ -63,7 +63,7 @@
                         toast: true,
                         position: "top-end",
                         icon: "success",
-                        title: "Succes!",
+                        title: "SUCCES!",
                         html: `New user account <strong>[${alias.toUpperCase()}]</strong> is saved!`,
                         showConfirmButton: false,
                         timer: 1500
@@ -107,7 +107,7 @@
                     toast: true,
                     position: "top-end",
                     icon: "success",
-                    title: "Succes!",
+                    title: "SUCCES!",
                     html: `User account <strong>[${alias.toUpperCase()}]</strong> is deleted!`,
                     showConfirmButton: false,
                     timer: 1500
@@ -155,8 +155,8 @@
                                     toast: true,
                                     position: "top-end",
                                     icon: "success",
-                                    title: "Succes!",
-                                    html: `Logout succes!`,
+                                    title: "SUCCES!",
+                                    html: `User logout succesful!`,
                                     showConfirmButton: false,
                                     timer: 1500
                                 }).then(() =>
